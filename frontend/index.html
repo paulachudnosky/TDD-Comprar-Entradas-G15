@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <title>Comprar Entradas - Demo</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <style>
+    body { font-family: system-ui, Arial, sans-serif; max-width: 800px; margin: 24px auto; }
+    fieldset { margin-bottom: 16px; }
+    label { display:block; margin: 6px 0; }
+    input, select, button { padding: 8px; width: 100%; box-sizing: border-box; }
+    .row { display:flex; gap:8px; }
+    .row > div { flex:1; }
+    .chip { display:inline-block; padding:6px 10px; border:1px solid #ddd; border-radius:8px; margin:4px 6px 0 0; }
+    .ok { color: #0a0; }
+    .err { color: #a00; }
+  </style>
+</head>
+<body>
+  <h1>Comprar Entradas</h1>
+
+  <fieldset>
+    <legend>Datos de compra</legend>
+    <label>Email comprador
+      <input id="email" type="email" placeholder="tu@email.com" required />
+    </label>
+    <div class="row">
+      <div>
+        <label>Fecha de visita
+          <input id="date" type="date" required />
+        </label>
+      </div>
+      <div>
+        <label>Forma de pago
+          <select id="payment">
+            <option value="Unspecified">-- Seleccionar --</option>
+            <option value="Cash">Efectivo (boletería)</option>
+            <option value="Card">Tarjeta (Mercado Pago)</option>
+          </select>
+        </label>
+      </div>
+    </div>
+  </fieldset>
+
+  <fieldset>
+    <legend>Visitantes</legend>
+    <div class="row">
+      <div>
+        <label>Cantidad
+          <input id="qty" type="number" min="1" max="10" value="2" />
+        </label>
+      </div>
+      <div>
+        <label>Tipo de pase
+          <select id="pass">
+            <option value="Regular">Regular</option>
+            <option value="Vip">VIP</option>
+          </select>
+        </label>
+      </div>
+    </div>
+    <label>Edad de los visitantes
+      <input id="age" type="number" min="1" max="120" value="25" />
+    </label>
+  </fieldset>
+
+  <button id="buyBtn">Comprar</button>
+  <div id="out" style="margin-top:16px;"></div>
+
+<script>
+const apiBase = "http://localhost:5074"; // <-- usá el puerto que te dio Kestrel
+
+document.getElementById("buyBtn").addEventListener("click", async () => {
+  const email = document.getElementById("email").value.trim();
+  const date = document.getElementById("date").value;
+  const payment = document.getElementById("payment").value;
+  const qty = parseInt(document.getElementById("qty").value, 10);
+  const pass = document.getElementById("pass").value;
+  const age = parseInt(document.getElementById("age").value, 10);
+
+  const visitors = Array.from({length: qty}, () => ({ age, passType: pass }));
+
+  const req = {
+    userId: crypto.randomUUID(),
+    buyerEmail: email,
+    visitDate: date || new Date().toISOString().slice(0,10),
+    visitors,
+    paymentMethod: payment,
+    currency: "ARS"
+  };
+
+  const out = document.getElementById("out");
+  out.textContent = "Procesando…";
+
+  try {
+    const r = await fetch(apiBase + "/tickets/purchase", {
+      method: "POST",
+      headers: { "Content-Type": "application/json"},
+      body: JSON.stringify(req)
+    });
+    const data = await r.json();
+
+    if (!r.ok) {
+      out.innerHTML = `<p class="err">Error: ${data.error || "Solicitud inválida"}</p>`;
+      return;
+    }
+
+    let html = `<p class="ok"><strong>OK</strong> – ${data.confirmationMessage}</p>`;
+    html += `<div class="chip">Entradas: ${data.ticketsCount}</div>`;
+    html += `<div class="chip">Fecha: ${data.visitDate}</div>`;
+    if (data.paymentRedirectUrl) {
+      html += `<p><a href="${data.paymentRedirectUrl}" target="_blank">Ir al checkout</a></p>`;
+    } else if (data.payAtTicketOffice) {
+      html += `<p>Pagarás en boletería el día de la visita.</p>`;
+    }
+    out.innerHTML = html;
+  } catch (e) {
+    out.innerHTML = `<p class="err">Fallo de red: ${e.message}</p>`;
+  }
+});
+</script>
+</body>
+</html>
