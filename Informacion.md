@@ -44,6 +44,7 @@ El desarrollo se realizó siguiendo el ciclo clásico:
 ---
 
 ## 🏗️ Arquitectura del proyecto
+```
 TDD-Comprar-Entradas-G15/
 │
 ├─ src/
@@ -64,7 +65,7 @@ TDD-Comprar-Entradas-G15/
 │ └─ index.html → Demo HTML + JS para probar la API
 │
 └─ README.md → Documento del trabajo práctico
-
+```
 
 Arquitectura basada en **puertos y adaptadores**:
 - Dominio no depende de infraestructura.  
