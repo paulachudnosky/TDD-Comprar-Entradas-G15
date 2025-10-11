@@ -1,0 +1,86 @@
+## ===================================
+## EcoHarmony Tickets - .NET + VS + Frontend
+## ===================================
+
+# --- Build / Bin / Obj ---
+[Bb]in/
+[Oo]bj/
+*.exe
+*.dll
+*.pdb
+*.cache
+*.log
+*.user
+*.suo
+*.userosscache
+*.sln.docstates
+
+# --- Visual Studio ---
+.vs/
+*.csproj.user
+*.dbmdl
+*.jfm
+*.aps
+*.ncb
+*.opendb
+*.VC.db
+*.VC.VC.opendb
+
+# --- .NET ---
+project.lock.json
+project.fragment.lock.json
+artifacts/
+*.nuget.props
+*.nuget.targets
+*.snupkg
+
+# --- Test results ---
+TestResult.xml
+TestResults/
+*.trx
+*.coverage
+*.coveragexml
+
+# --- Build output directories ---
+src/**/bin/
+src/**/obj/
+tests/**/bin/
+tests/**/obj/
+
+# --- Logs / Temp ---
+*.log
+*.tmp
+*.temp
+*.bak
+*.swp
+*.DS_Store
+Thumbs.db
+
+# --- Rider / JetBrains ---
+.idea/
+*.sln.iml
+
+# --- VS Code ---
+.vscode/
+.history/
+*.code-workspace
+
+# --- Frontend (Live Server / Node optional) ---
+frontend/node_modules/
+frontend/dist/
+frontend/.parcel-cache/
+frontend/.vite/
+frontend/.DS_Store
+
+# --- OS files ---
+.DS_Store
+ehthumbs.db
+Icon?
+Desktop.ini
+
+# --- Backup ---
+*.orig
+*.rej
+*.bak
+*.old
+*.save
