@@ -35,11 +35,15 @@ El desarrollo se realizó siguiendo el ciclo clásico:
 ### Pruebas Implementadas (xUnit)
 - Rechaza si el usuario no está registrado.  
 - Rechaza si la fecha está en el pasado.  
-- Rechaza si el parque está cerrado.  
+- Rechaza si el parque está cerrado.  (Lunes y martes cerrado)
 - Rechaza si la cantidad de entradas > 10.  
 - Rechaza si no se elige forma de pago.  
 - Acepta pago con tarjeta → retorna URL de redirección.  
 - Acepta pago en efectivo → marca “pago en boletería”.
+
+- Acepta la fecha de hoy si el parque está abierto.  (Opcional)
+- En efectivo, también envía email e incluye cantidad y fecha en el mensaje.  (Opcional)
+- En tarjeta, el mensaje de confirmación incluye cantidad y fecha. (Opcional)
 
 ---
 

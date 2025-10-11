@@ -86,6 +86,7 @@
 const apiBase = "http://localhost:5080"; // asegurate que coincide con tu API
 const PRICE_REG = 15000;
 const PRICE_VIP = 25000;
+const STORAGE_KEY = "eh_last_purchase";
 
 const $ = (id) => document.getElementById(id);
 const fmt = (n) => n.toLocaleString('es-AR', { style: 'currency', currency: 'ARS', maximumFractionDigits: 0 });
@@ -212,48 +213,29 @@ $("buyBtn").addEventListener("click", async () => {
       return;
     }
 
-    let html = `<p class="ok"><strong>OK</strong> – ${data.confirmationMessage}</p>`;
-    html += `<div class="chips">
-      <span class="chip">Entradas: ${data.ticketsCount}</span>
-      <span class="chip">Fecha: ${data.visitDate}</span>
-    </div>`;
+    // ---- NUEVO: guardamos snapshot y redirigimos según forma de pago ----
+    const snapshot = {
+      // request
+      buyerEmail: email,
+      visitDate: date,
+      paymentMethod: payment, // "Card" | "Cash"
+      visitors,
+      // response
+      result: data,
+      createdAt: new Date().toISOString()
+    };
+    localStorage.setItem(STORAGE_KEY, JSON.stringify(snapshot));
 
-    // Total oficial de API (si viene)
-    if (typeof data.totalAmount === "number" && data.totalAmount >= 0) {
-      const totalFmt = data.totalAmount.toLocaleString('es-AR', { style: 'currency', currency: 'ARS', maximumFractionDigits: 0 });
-      html += `<div class="panel" style="margin-top:8px;">
-        <div class="price-line total"><span>Total (API)</span><span>${totalFmt}</span></div>
-      </div>`;
+    if (payment === "Card") {
+      // Ir al checkout simulado
+      window.location.href = "checkout.html";
+      return;
     } else {
-      // Fallback: cálculo cliente
-      const subR = qR * PRICE_REG;
-      const subV = qV * PRICE_VIP;
-      const total = subR + subV;
-      html += `<div class="panel" style="margin-top:8px;">
-        <div class="price-line muted"><span>Subtotal Regular</span><span>${fmt(subR)}</span></div>
-        <div class="price-line muted"><span>Subtotal VIP</span><span>${fmt(subV)}</span></div>
-        <div class="price-line total"><span>Total</span><span>${fmt(total)}</span></div>
-      </div>`;
+      // Efectivo: ir directo a detalles de compra
+      window.location.href = "purchase-details.html";
+      return;
     }
-
-    // Link de checkout si corresponde
-    const hasRedirect = typeof data.paymentRedirectUrl === "string" && data.paymentRedirectUrl.trim().length > 0;
-    if (hasRedirect) {
-      html += `
-        <div class="panel" style="margin-top:10px;">
-          <div class="price-line"><span>Checkout</span>
-            <span><a href="${data.paymentRedirectUrl}" target="_blank" rel="noopener">Ir al checkout</a></span>
-          </div>
-          <div class="muted" style="margin-top:6px;">
-            URL:
-            <input type="text" value="${data.paymentRedirectUrl}" readonly style="width:100%; background:#fff; border:1px solid #ddd; border-radius:6px; padding:6px; margin-top:4px;">
-          </div>
-        </div>`;
-    } else if (data.payAtTicketOffice) {
-      html += `<p style="margin-top:10px;">Pagarás en boletería el día de la visita.</p>`;
-    }
-
-    out.innerHTML = html;
+    // --------------------------------------------------------------------
 
   } catch (e) {
     out.innerHTML = `<div class="err"><strong>Fallo de red:</strong> ${e.message}</div>`;
