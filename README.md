@@ -1,10 +1,10 @@
 # 🧩 TDD – User Story: “Comprar Entradas”
 
 **Materia:** Ingeniería y Calidad de Software  
-**Grupo:** Grupo 15
+**Grupo:** Grupo 15  
 **Tecnologías:** C# / .NET 8 / xUnit / Moq / ASP.NET Core Minimal API  
 **Paradigma:** Desarrollo Dirigido por Pruebas (TDD)  
-**Frontend:** HTML + JavaScript (fetch API)
+**Frontend:** HTML + JavaScript (fetch API)  
 **Integrantes:**
 - 👨‍💻 Galiano, Tomas 85824
 - 👨‍💻 Reyna, Teodoro 89891
@@ -15,6 +15,7 @@
 - 👨‍💻 Capellan, Jorge Gabriel 82595
 - 👨‍💻 Poltawcew, Ivan Mijail 85470
 - 👨‍💻 Nass, Franco David 88534
+  
 **Repositorio:** [[GitHub – TDD-Comprar-Entradas-G15](https://github.com/paulachudnosky/TDD-Comprar-Entradas-G15)]
 
 ---
