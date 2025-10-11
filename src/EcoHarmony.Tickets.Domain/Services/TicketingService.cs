@@ -25,7 +25,7 @@ namespace EcoHarmony.Tickets.Domain.Services
             Validate(request);
 
             // Precios demo (placeholder)
-            decimal total = request.Visitors.Sum(v => v.PassType == PassType.Vip ? 15000m : 10000m);
+            decimal total = request.Visitors.Sum(v => v.PassType == PassType.Vip ? 25000m : 15000m);
 
             string? redirect = null;
             bool payAtCounter = false;
@@ -46,7 +46,9 @@ namespace EcoHarmony.Tickets.Domain.Services
                 VisitDate = request.VisitDate,
                 PaymentRedirectUrl = redirect,
                 PayAtTicketOffice = payAtCounter,
-                ConfirmationMessage = $"Compra confirmada: {request.Visitors.Count} entradas para {request.VisitDate}."
+                ConfirmationMessage = $"Compra confirmada: {request.Visitors.Count} entradas para {request.VisitDate}.",
+                TotalAmount = total,              
+                Currency = request.Currency       
             };
 
             _email.Send(request.BuyerEmail,

@@ -8,5 +8,7 @@ namespace EcoHarmony.Tickets.Domain.Entities
         public string? PaymentRedirectUrl { get; set; }
         public bool PayAtTicketOffice { get; set; }
         public string ConfirmationMessage { get; set; } = string.Empty;
+        public decimal TotalAmount { get; set; }
+        public string Currency { get; set; } = "ARS";
     }
 }
