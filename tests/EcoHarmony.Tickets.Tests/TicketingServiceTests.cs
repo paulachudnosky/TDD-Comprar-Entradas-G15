@@ -130,7 +130,16 @@ namespace EcoHarmony.Tickets.Tests
         [Fact]
         public void Accepts_cash_payment_without_redirect_and_sends_email()
         {
-            var service = BuildService();
+            var userRepo = new Mock<IUserRepository>();
+            userRepo.Setup(r => r.Exists(It.IsAny<Guid>())).Returns(true);
+
+            var calendar = new Mock<IParkCalendar>();
+            calendar.Setup(c => c.IsOpen(It.IsAny<DateOnly>())).Returns(true);
+
+            var email = new Mock<IEmailSender>();
+            var pay = new Mock<IPaymentGateway>();
+
+            var service = new TicketingService(userRepo.Object, calendar.Object, email.Object, pay.Object);
             var req = ValidRequest(PaymentMethod.Cash, qty: 1);
 
             var result = service.BuyTickets(req);
@@ -139,6 +148,123 @@ namespace EcoHarmony.Tickets.Tests
             Assert.Equal(1, result.TicketsCount);
             Assert.Null(result.PaymentRedirectUrl);
             Assert.True(result.PayAtTicketOffice);
+
+            // extra verificación de email para efectivo
+            email.Verify(e => e.Send(req.BuyerEmail,
+                It.Is<string>(s => s.Contains("confirmación", StringComparison.OrdinalIgnoreCase)),
+                It.Is<string>(b => b.Contains("1 entradas") || b.Contains("1 entrada"))),
+                Times.Once);
+        }
+
+        // ---------- TESTS EXTRA PARA CERRAR GAPS DEL ENUNCIADO ----------
+
+        [Fact]
+        public void Accepts_today_date_if_park_open()
+        {
+            var userRepo = new Mock<IUserRepository>();
+            userRepo.Setup(r => r.Exists(It.IsAny<Guid>())).Returns(true);
+
+            var calendar = new Mock<IParkCalendar>();
+            // hoy abierto
+            calendar.Setup(c => c.IsOpen(It.IsAny<DateOnly>())).Returns(true);
+
+            var email = new Mock<IEmailSender>();
+            var pay = new Mock<IPaymentGateway>();
+            pay.Setup(p => p.CreatePayment(It.IsAny<decimal>(), It.IsAny<string>()))
+               .Returns("https://sandbox.mercado-pago/checkout/today");
+
+            var service = new TicketingService(userRepo.Object, calendar.Object, email.Object, pay.Object);
+
+            var req = new PurchaseRequest
+            {
+                UserId = Guid.NewGuid(),
+                VisitDate = DateOnly.FromDateTime(DateTime.UtcNow.Date), // HOY
+                Visitors = new List<Visitor> { new Visitor { Age = 20, PassType = PassType.Regular } },
+                PaymentMethod = PaymentMethod.Card,
+                BuyerEmail = "test@buyer.com"
+            };
+
+            var result = service.BuyTickets(req);
+
+            Assert.True(result.Success);
+            Assert.Equal(req.VisitDate, result.VisitDate);
+        }
+
+        [Fact]
+        public void Cash_payment_email_contains_count_and_date()
+        {
+            var userRepo = new Mock<IUserRepository>();
+            userRepo.Setup(r => r.Exists(It.IsAny<Guid>())).Returns(true);
+
+            var calendar = new Mock<IParkCalendar>();
+            calendar.Setup(c => c.IsOpen(It.IsAny<DateOnly>())).Returns(true);
+
+            var email = new Mock<IEmailSender>();
+            var pay = new Mock<IPaymentGateway>();
+
+            var service = new TicketingService(userRepo.Object, calendar.Object, email.Object, pay.Object);
+
+            var req = new PurchaseRequest
+            {
+                UserId = Guid.NewGuid(),
+                VisitDate = DateOnly.FromDateTime(DateTime.UtcNow.Date).AddDays(1),
+                Visitors = new List<Visitor> {
+                    new Visitor { Age = 25, PassType = PassType.Regular },
+                    new Visitor { Age = 30, PassType = PassType.Vip }
+                },
+                PaymentMethod = PaymentMethod.Cash,
+                BuyerEmail = "cash@buyer.com"
+            };
+
+            var result = service.BuyTickets(req);
+
+            Assert.True(result.Success);
+            Assert.True(result.PayAtTicketOffice);
+            Assert.Null(result.PaymentRedirectUrl);
+            Assert.Contains("2 entradas", result.ConfirmationMessage);
+            Assert.Contains(result.VisitDate.ToString(), result.ConfirmationMessage);
+
+            email.Verify(e => e.Send("cash@buyer.com",
+                It.Is<string>(s => s.Contains("confirmación", StringComparison.OrdinalIgnoreCase)),
+                It.Is<string>(b => b.Contains("2 entradas") && b.Contains(result.VisitDate.ToString()))),
+                Times.Once);
+        }
+
+        [Fact]
+        public void Card_payment_confirmation_message_includes_count_and_date()
+        {
+            var userRepo = new Mock<IUserRepository>();
+            userRepo.Setup(r => r.Exists(It.IsAny<Guid>())).Returns(true);
+
+            var calendar = new Mock<IParkCalendar>();
+            calendar.Setup(c => c.IsOpen(It.IsAny<DateOnly>())).Returns(true);
+
+            var email = new Mock<IEmailSender>();
+            var pay = new Mock<IPaymentGateway>();
+            pay.Setup(p => p.CreatePayment(It.IsAny<decimal>(), It.IsAny<string>()))
+               .Returns("https://sandbox.mercado-pago/checkout/xyz-card");
+
+            var service = new TicketingService(userRepo.Object, calendar.Object, email.Object, pay.Object);
+
+            var req = new PurchaseRequest
+            {
+                UserId = Guid.NewGuid(),
+                VisitDate = DateOnly.FromDateTime(DateTime.UtcNow.Date).AddDays(2),
+                Visitors = new List<Visitor> {
+                    new Visitor { Age = 25, PassType = PassType.Regular },
+                    new Visitor { Age = 25, PassType = PassType.Regular },
+                    new Visitor { Age = 25, PassType = PassType.Vip }
+                },
+                PaymentMethod = PaymentMethod.Card,
+                BuyerEmail = "card@buyer.com"
+            };
+
+            var result = service.BuyTickets(req);
+
+            Assert.True(result.Success);
+            Assert.NotNull(result.PaymentRedirectUrl);
+            Assert.Contains("3 entradas", result.ConfirmationMessage);
+            Assert.Contains(result.VisitDate.ToString(), result.ConfirmationMessage);
         }
     }
 }

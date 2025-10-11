@@ -1,0 +1,116 @@
+### =========================
+### EcoHarmony Park - E2E API Tests (.http)
+### Requiere VS Code + extensión "REST Client" (humao.rest-client)
+### Ejecutá cada bloque con "Send Request"
+### =========================
+
+
+@host = http://localhost:5080
+@userId = 11111111-1111-1111-1111-111111111111
+@openDate = 2025-10-19
+@closedDate = 2025-10-14
+@pastDate = 2024-01-01
+
+### 0) Root -> Redirect a Swagger (opcional si agregaste MapGet("/"))
+GET {{host}}/
+
+### 1) OK (Tarjeta) – Día abierto, 2 visitantes (Regular + VIP)
+# Esperado: 200 OK, success:true, paymentRedirectUrl no nulo, email simulado en consola
+POST {{host}}/tickets/purchase
+Content-Type: application/json
+
+{
+  "userId": "{{userId}}",
+  "visitDate": "{{openDate}}",
+  "visitors": [
+    { "age": 25, "passType": "Regular" },
+    { "age": 30, "passType": "Vip" }
+  ],
+  "paymentMethod": "Card",
+  "buyerEmail": "card@demo.com"
+}
+
+### 2) OK (Efectivo) – Día abierto, 1 visitante Regular
+# Esperado: 200 OK, payAtTicketOffice:true, paymentRedirectUrl:null, email simulado en consola
+POST {{host}}/tickets/purchase
+Content-Type: application/json
+
+{
+  "userId": "{{userId}}",
+  "visitDate": "{{openDate}}",
+  "visitors": [
+    { "age": 22, "passType": "Regular" }
+  ],
+  "paymentMethod": "Cash",
+  "buyerEmail": "cash@demo.com"
+}
+
+### 3) ERROR – Fecha en pasado
+# Esperado: 400 BadRequest con mensaje que incluya "fecha"
+POST {{host}}/tickets/purchase
+Content-Type: application/json
+
+{
+  "userId": "{{userId}}",
+  "visitDate": "{{pastDate}}",
+  "visitors": [
+    { "age": 25, "passType": "Regular" }
+  ],
+  "paymentMethod": "Card",
+  "buyerEmail": "demo@utn.com"
+}
+
+### 4) ERROR – Parque cerrado (martes)
+# Esperado: 400 BadRequest con mensaje que incluya "parque está cerrado"
+POST {{host}}/tickets/purchase
+Content-Type: application/json
+
+{
+  "userId": "{{userId}}",
+  "visitDate": "{{closedDate}}",
+  "visitors": [
+    { "age": 25, "passType": "Regular" }
+  ],
+  "paymentMethod": "Card",
+  "buyerEmail": "demo@utn.com"
+}
+
+### 5) ERROR – Cantidad > 10
+# Esperado: 400 BadRequest con mensaje que incluya "no debe ser mayor a 10"
+POST {{host}}/tickets/purchase
+Content-Type: application/json
+
+{
+  "userId": "{{userId}}",
+  "visitDate": "{{openDate}}",
+  "visitors": [
+    { "age": 25, "passType": "Regular" },
+    { "age": 25, "passType": "Regular" },
+    { "age": 25, "passType": "Regular" },
+    { "age": 25, "passType": "Regular" },
+    { "age": 25, "passType": "Regular" },
+    { "age": 25, "passType": "Regular" },
+    { "age": 25, "passType": "Regular" },
+    { "age": 25, "passType": "Regular" },
+    { "age": 25, "passType": "Regular" },
+    { "age": 25, "passType": "Regular" },
+    { "age": 25, "passType": "Regular" }
+  ],
+  "paymentMethod": "Card",
+  "buyerEmail": "demo@utn.com"
+}
+
+### 6) ERROR – Sin forma de pago
+# Esperado: 400 BadRequest con mensaje que incluya "forma de pago"
+POST {{host}}/tickets/purchase
+Content-Type: application/json
+
+{
+  "userId": "{{userId}}",
+  "visitDate": "{{openDate}}",
+  "visitors": [
+    { "age": 25, "passType": "Regular" }
+  ],
+  "paymentMethod": "Unspecified",
+  "buyerEmail": "demo@utn.com"
+}
