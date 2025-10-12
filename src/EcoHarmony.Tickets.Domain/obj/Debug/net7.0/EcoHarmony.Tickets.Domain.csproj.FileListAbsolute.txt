@@ -10,3 +10,15 @@
 /home/teo/ISW/TDD-Comprar-Entradas-G15/src/EcoHarmony.Tickets.Domain/obj/Debug/net7.0/refint/EcoHarmony.Tickets.Domain.dll
 /home/teo/ISW/TDD-Comprar-Entradas-G15/src/EcoHarmony.Tickets.Domain/obj/Debug/net7.0/EcoHarmony.Tickets.Domain.pdb
 /home/teo/ISW/TDD-Comprar-Entradas-G15/src/EcoHarmony.Tickets.Domain/obj/Debug/net7.0/ref/EcoHarmony.Tickets.Domain.dll
+F:\FACULTAD\4 año\ISW\programable2025\TDD-Comprar-Entradas-G15\src\EcoHarmony.Tickets.Domain\bin\Debug\net7.0\EcoHarmony.Tickets.Domain.deps.json
+F:\FACULTAD\4 año\ISW\programable2025\TDD-Comprar-Entradas-G15\src\EcoHarmony.Tickets.Domain\bin\Debug\net7.0\EcoHarmony.Tickets.Domain.dll
+F:\FACULTAD\4 año\ISW\programable2025\TDD-Comprar-Entradas-G15\src\EcoHarmony.Tickets.Domain\bin\Debug\net7.0\EcoHarmony.Tickets.Domain.pdb
+F:\FACULTAD\4 año\ISW\programable2025\TDD-Comprar-Entradas-G15\src\EcoHarmony.Tickets.Domain\obj\Debug\net7.0\EcoHarmony.Tickets.Domain.GeneratedMSBuildEditorConfig.editorconfig
+F:\FACULTAD\4 año\ISW\programable2025\TDD-Comprar-Entradas-G15\src\EcoHarmony.Tickets.Domain\obj\Debug\net7.0\EcoHarmony.Tickets.Domain.AssemblyInfoInputs.cache
+F:\FACULTAD\4 año\ISW\programable2025\TDD-Comprar-Entradas-G15\src\EcoHarmony.Tickets.Domain\obj\Debug\net7.0\EcoHarmony.Tickets.Domain.AssemblyInfo.cs
+F:\FACULTAD\4 año\ISW\programable2025\TDD-Comprar-Entradas-G15\src\EcoHarmony.Tickets.Domain\obj\Debug\net7.0\EcoHarmony.Tickets.Domain.csproj.CoreCompileInputs.cache
+F:\FACULTAD\4 año\ISW\programable2025\TDD-Comprar-Entradas-G15\src\EcoHarmony.Tickets.Domain\obj\Debug\net7.0\EcoHarmony.Tickets.Domain.sourcelink.json
+F:\FACULTAD\4 año\ISW\programable2025\TDD-Comprar-Entradas-G15\src\EcoHarmony.Tickets.Domain\obj\Debug\net7.0\EcoHarmony.Tickets.Domain.dll
+F:\FACULTAD\4 año\ISW\programable2025\TDD-Comprar-Entradas-G15\src\EcoHarmony.Tickets.Domain\obj\Debug\net7.0\refint\EcoHarmony.Tickets.Domain.dll
+F:\FACULTAD\4 año\ISW\programable2025\TDD-Comprar-Entradas-G15\src\EcoHarmony.Tickets.Domain\obj\Debug\net7.0\EcoHarmony.Tickets.Domain.pdb
+F:\FACULTAD\4 año\ISW\programable2025\TDD-Comprar-Entradas-G15\src\EcoHarmony.Tickets.Domain\obj\Debug\net7.0\ref\EcoHarmony.Tickets.Domain.dll

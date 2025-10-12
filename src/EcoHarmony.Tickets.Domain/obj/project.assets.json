@@ -8,24 +8,26 @@
     "net7.0": []
   },
   "packageFolders": {
-    "/home/teo/.nuget/packages/": {}
+    "C:\\Users\\jcdec\\.nuget\\packages\\": {}
   },
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "/home/teo/ISW/TDD-Comprar-Entradas-G15/src/EcoHarmony.Tickets.Domain/EcoHarmony.Tickets.Domain.csproj",
+      "projectUniqueName": "F:\\FACULTAD\\4 año\\ISW\\programable2025\\TDD-Comprar-Entradas-G15\\src\\EcoHarmony.Tickets.Domain\\EcoHarmony.Tickets.Domain.csproj",
       "projectName": "EcoHarmony.Tickets.Domain",
-      "projectPath": "/home/teo/ISW/TDD-Comprar-Entradas-G15/src/EcoHarmony.Tickets.Domain/EcoHarmony.Tickets.Domain.csproj",
-      "packagesPath": "/home/teo/.nuget/packages/",
-      "outputPath": "/home/teo/ISW/TDD-Comprar-Entradas-G15/src/EcoHarmony.Tickets.Domain/obj/",
+      "projectPath": "F:\\FACULTAD\\4 año\\ISW\\programable2025\\TDD-Comprar-Entradas-G15\\src\\EcoHarmony.Tickets.Domain\\EcoHarmony.Tickets.Domain.csproj",
+      "packagesPath": "C:\\Users\\jcdec\\.nuget\\packages\\",
+      "outputPath": "F:\\FACULTAD\\4 año\\ISW\\programable2025\\TDD-Comprar-Entradas-G15\\src\\EcoHarmony.Tickets.Domain\\obj\\",
       "projectStyle": "PackageReference",
       "configFilePaths": [
-        "/home/teo/.nuget/NuGet/NuGet.Config"
+        "C:\\Users\\jcdec\\AppData\\Roaming\\NuGet\\NuGet.Config",
+        "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
       ],
       "originalTargetFrameworks": [
         "net7.0"
       ],
       "sources": {
+        "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
         "https://api.nuget.org/v3/index.json": {}
       },
       "frameworks": {
@@ -59,22 +61,12 @@
         ],
         "assetTargetFallback": true,
         "warn": true,
-        "downloadDependencies": [
-          {
-            "name": "Microsoft.AspNetCore.App.Ref",
-            "version": "[7.0.20, 7.0.20]"
-          },
-          {
-            "name": "Microsoft.NETCore.App.Ref",
-            "version": "[7.0.20, 7.0.20]"
-          }
-        ],
         "frameworkReferences": {
           "Microsoft.NETCore.App": {
             "privateAssets": "all"
           }
         },
-        "runtimeIdentifierGraphPath": "/usr/share/dotnet/sdk/8.0.414/RuntimeIdentifierGraph.json"
+        "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\8.0.414\\RuntimeIdentifierGraph.json"
       }
     }
   }

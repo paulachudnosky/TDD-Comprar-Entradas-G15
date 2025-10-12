@@ -559,32 +559,34 @@
     ]
   },
   "packageFolders": {
-    "/home/teo/.nuget/packages/": {}
+    "C:\\Users\\jcdec\\.nuget\\packages\\": {}
   },
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "/home/teo/ISW/TDD-Comprar-Entradas-G15/src/EcoHarmony.Tickets.Api/EcoHarmony.Tickets.Api.csproj",
+      "projectUniqueName": "F:\\FACULTAD\\4 año\\ISW\\programable2025\\TDD-Comprar-Entradas-G15\\src\\EcoHarmony.Tickets.Api\\EcoHarmony.Tickets.Api.csproj",
       "projectName": "EcoHarmony.Tickets.Api",
-      "projectPath": "/home/teo/ISW/TDD-Comprar-Entradas-G15/src/EcoHarmony.Tickets.Api/EcoHarmony.Tickets.Api.csproj",
-      "packagesPath": "/home/teo/.nuget/packages/",
-      "outputPath": "/home/teo/ISW/TDD-Comprar-Entradas-G15/src/EcoHarmony.Tickets.Api/obj/",
+      "projectPath": "F:\\FACULTAD\\4 año\\ISW\\programable2025\\TDD-Comprar-Entradas-G15\\src\\EcoHarmony.Tickets.Api\\EcoHarmony.Tickets.Api.csproj",
+      "packagesPath": "C:\\Users\\jcdec\\.nuget\\packages\\",
+      "outputPath": "F:\\FACULTAD\\4 año\\ISW\\programable2025\\TDD-Comprar-Entradas-G15\\src\\EcoHarmony.Tickets.Api\\obj\\",
       "projectStyle": "PackageReference",
       "configFilePaths": [
-        "/home/teo/.nuget/NuGet/NuGet.Config"
+        "C:\\Users\\jcdec\\AppData\\Roaming\\NuGet\\NuGet.Config",
+        "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
       ],
       "originalTargetFrameworks": [
         "net8.0"
       ],
       "sources": {
+        "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
         "https://api.nuget.org/v3/index.json": {}
       },
       "frameworks": {
         "net8.0": {
           "targetAlias": "net8.0",
           "projectReferences": {
-            "/home/teo/ISW/TDD-Comprar-Entradas-G15/src/EcoHarmony.Tickets.Domain/EcoHarmony.Tickets.Domain.csproj": {
-              "projectPath": "/home/teo/ISW/TDD-Comprar-Entradas-G15/src/EcoHarmony.Tickets.Domain/EcoHarmony.Tickets.Domain.csproj"
+            "F:\\FACULTAD\\4 año\\ISW\\programable2025\\TDD-Comprar-Entradas-G15\\src\\EcoHarmony.Tickets.Domain\\EcoHarmony.Tickets.Domain.csproj": {
+              "projectPath": "F:\\FACULTAD\\4 año\\ISW\\programable2025\\TDD-Comprar-Entradas-G15\\src\\EcoHarmony.Tickets.Domain\\EcoHarmony.Tickets.Domain.csproj"
             }
           }
         }
@@ -632,7 +634,7 @@
             "privateAssets": "all"
           }
         },
-        "runtimeIdentifierGraphPath": "/usr/share/dotnet/sdk/8.0.414/PortableRuntimeIdentifierGraph.json"
+        "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\8.0.414/PortableRuntimeIdentifierGraph.json"
       }
     }
   }

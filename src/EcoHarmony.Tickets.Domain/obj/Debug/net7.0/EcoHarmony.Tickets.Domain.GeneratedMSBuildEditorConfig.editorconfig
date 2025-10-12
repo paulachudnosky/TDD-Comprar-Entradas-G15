@@ -8,6 +8,6 @@ build_property.PlatformNeutralAssembly =
 build_property.EnforceExtendedAnalyzerRules = 
 build_property._SupportedPlatformList = Linux,macOS,Windows
 build_property.RootNamespace = EcoHarmony.Tickets.Domain
-build_property.ProjectDir = /home/teo/ISW/TDD-Comprar-Entradas-G15/src/EcoHarmony.Tickets.Domain/
+build_property.ProjectDir = F:\FACULTAD\4 año\ISW\programable2025\TDD-Comprar-Entradas-G15\src\EcoHarmony.Tickets.Domain\
 build_property.EnableComHosting = 
 build_property.EnableGeneratedComInterfaceComImportInterop = 
