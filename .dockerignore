@@ -1,0 +1,15 @@
+# Ignorar directorios de compilación
+bin/
+obj/
+
+# Ignorar archivos específicos del entorno de desarrollo
+*.user
+*.vs
+.vscode/
+
+# Ignorar directorios del sistema de control de versiones
+.git/
+.gitignore
+
+# Ignorar dependencias de Node
+node_modules/
