@@ -47,13 +47,44 @@ namespace EcoHarmony.Tickets.Domain.Services
                 PaymentRedirectUrl = redirect,
                 PayAtTicketOffice = payAtCounter,
                 ConfirmationMessage = $"Compra confirmada: {request.Visitors.Count} entradas para {request.VisitDate}.",
-                TotalAmount = total,              
-                Currency = request.Currency       
+                TotalAmount = total,
+                Currency = request.Currency
             };
 
-            _email.Send(request.BuyerEmail,
-                        "Confirmación de compra de entradas",
-                        result.ConfirmationMessage);
+            // --- INICIA LA MEJORA DEL EMAIL ---
+
+            // 1. Define un asunto claro
+            var subject = $"Confirmación de tu compra para EcoHarmony Park (Fecha: {request.VisitDate:dd/MM/yyyy})";
+
+            // 2. Crea un mensaje de pago dinámico
+            var paymentInfo = request.PaymentMethod == PaymentMethod.Card
+                ? $"Se ha procesado un pago de <strong>{total:C} {request.Currency}</strong> con tu tarjeta. Serás redirigido para finalizar."
+                : $"Por favor, recuerda abonar <strong>{total:C} {request.Currency}</strong> en la boletería del parque el día de tu visita.";
+
+            // 3. Construye el cuerpo del email con HTML
+            var htmlBody = $"""
+                <html>
+                <body style="font-family: sans-serif; padding: 20px;">
+                    <h1 style="color: #2E7D32;">¡Tu visita a EcoHarmony Park está confirmada!</h1>
+                    <p>Hola,</p>
+                    <p>Gracias por elegirnos. Aquí están los detalles de tu compra:</p>
+                    <hr>
+                    <p><strong>Número de entradas:</strong> {request.Visitors.Count}</p>
+                    <p><strong>Fecha de visita:</strong> {request.VisitDate:dddd, dd 'de' MMMM 'de' yyyy}</p>
+                    <p><strong>Monto Total:</strong> {total:C} {request.Currency}</p>
+                    <hr>
+                    <p>{paymentInfo}</p>
+                    <br>
+                    <p>¡Te esperamos para que disfrutes de una experiencia inolvidable!</p>
+                    <p><em>El equipo de EcoHarmony Park</em></p>
+                </body>
+                </html>
+            """;
+
+            // 4. Envía el nuevo email
+            _email.Send(request.BuyerEmail, subject, htmlBody);
+            
+            // --- FIN DE LA MEJORA DEL EMAIL ---
 
             return result;
         }

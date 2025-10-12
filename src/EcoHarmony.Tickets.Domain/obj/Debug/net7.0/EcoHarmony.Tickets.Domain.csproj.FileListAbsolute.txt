@@ -1,0 +1,12 @@
+/home/teo/ISW/TDD-Comprar-Entradas-G15/src/EcoHarmony.Tickets.Domain/bin/Debug/net7.0/EcoHarmony.Tickets.Domain.deps.json
+/home/teo/ISW/TDD-Comprar-Entradas-G15/src/EcoHarmony.Tickets.Domain/bin/Debug/net7.0/EcoHarmony.Tickets.Domain.dll
+/home/teo/ISW/TDD-Comprar-Entradas-G15/src/EcoHarmony.Tickets.Domain/bin/Debug/net7.0/EcoHarmony.Tickets.Domain.pdb
+/home/teo/ISW/TDD-Comprar-Entradas-G15/src/EcoHarmony.Tickets.Domain/obj/Debug/net7.0/EcoHarmony.Tickets.Domain.GeneratedMSBuildEditorConfig.editorconfig
+/home/teo/ISW/TDD-Comprar-Entradas-G15/src/EcoHarmony.Tickets.Domain/obj/Debug/net7.0/EcoHarmony.Tickets.Domain.AssemblyInfoInputs.cache
+/home/teo/ISW/TDD-Comprar-Entradas-G15/src/EcoHarmony.Tickets.Domain/obj/Debug/net7.0/EcoHarmony.Tickets.Domain.AssemblyInfo.cs
+/home/teo/ISW/TDD-Comprar-Entradas-G15/src/EcoHarmony.Tickets.Domain/obj/Debug/net7.0/EcoHarmony.Tickets.Domain.csproj.CoreCompileInputs.cache
+/home/teo/ISW/TDD-Comprar-Entradas-G15/src/EcoHarmony.Tickets.Domain/obj/Debug/net7.0/EcoHarmony.Tickets.Domain.sourcelink.json
+/home/teo/ISW/TDD-Comprar-Entradas-G15/src/EcoHarmony.Tickets.Domain/obj/Debug/net7.0/EcoHarmony.Tickets.Domain.dll
+/home/teo/ISW/TDD-Comprar-Entradas-G15/src/EcoHarmony.Tickets.Domain/obj/Debug/net7.0/refint/EcoHarmony.Tickets.Domain.dll
+/home/teo/ISW/TDD-Comprar-Entradas-G15/src/EcoHarmony.Tickets.Domain/obj/Debug/net7.0/EcoHarmony.Tickets.Domain.pdb
+/home/teo/ISW/TDD-Comprar-Entradas-G15/src/EcoHarmony.Tickets.Domain/obj/Debug/net7.0/ref/EcoHarmony.Tickets.Domain.dll

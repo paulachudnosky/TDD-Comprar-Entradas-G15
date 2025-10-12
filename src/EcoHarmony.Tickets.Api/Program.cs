@@ -3,7 +3,7 @@ using EcoHarmony.Tickets.Domain.Ports;
 using EcoHarmony.Tickets.Domain.Services;
 using System.Text.Json.Serialization;
 using EcoHarmony.Tickets.Api;
-
+using EcoHarmony.Tickets.Api.Adapters;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -20,6 +20,7 @@ builder.Services.AddCors(options =>
 {
     options.AddDefaultPolicy(policy =>
         policy.WithOrigins(
+                "http://localhost:8080",
                 "http://127.0.0.1:5500",  // Live Server
                 "http://localhost:5500",  // http-server
                 "file://")                // apertura directa del HTML (algunos navegadores)
@@ -30,7 +31,8 @@ builder.Services.AddCors(options =>
 // Inyección de dependencias (adapters falsos)
 builder.Services.AddSingleton<IUserRepository, InMemoryUserRepo>();
 builder.Services.AddSingleton<IParkCalendar, SimpleCalendar>();
-builder.Services.AddSingleton<IEmailSender, ConsoleEmailSender>();
+builder.Services.AddSingleton<IEmailSender, SendGridEmailSender>();   
+
 builder.Services.AddSingleton<IPaymentGateway, FakePaymentGateway>();
 
 // Servicio principal (dominio)
@@ -80,7 +82,7 @@ app.MapGet("/", () => Results.Redirect("/swagger"));
 
 // Si no se define otro puerto, arranca en 5080
 var port = Environment.GetEnvironmentVariable("PORT") ?? "5080";
-app.Urls.Add($"http://localhost:{port}");
+app.Urls.Add($"http://*:{port}");
 
 app.Run();
 

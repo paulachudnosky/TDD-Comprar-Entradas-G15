@@ -13,7 +13,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("EcoHarmony.Tickets.Domain")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+b7293a2a5144f61022fd3efc629b0fc21972d785")]
 [assembly: System.Reflection.AssemblyProductAttribute("EcoHarmony.Tickets.Domain")]
 [assembly: System.Reflection.AssemblyTitleAttribute("EcoHarmony.Tickets.Domain")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]
