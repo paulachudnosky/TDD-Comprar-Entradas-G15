@@ -47,7 +47,7 @@ namespace EcoHarmony.Tickets.Tests
         }
 
         [Fact]
-        public void Rejects_if_user_not_registered()
+        public void Test_rejects_if_user_not_registered()
         {
             var service = BuildService(userExists: false);
             var req = ValidRequest();
@@ -57,7 +57,7 @@ namespace EcoHarmony.Tickets.Tests
         }
 
         [Fact]
-        public void Rejects_if_date_in_past()
+        public void Test_rejects_if_date_in_past()
         {
             var service = BuildService();
             var req = ValidRequest();
@@ -68,7 +68,7 @@ namespace EcoHarmony.Tickets.Tests
         }
 
         [Fact]
-        public void Rejects_if_park_closed_that_day()
+        public void Test_rejects_if_park_closed_that_day()
         {
             var service = BuildService(dateIsOpen: false);
             var req = ValidRequest();
@@ -78,7 +78,7 @@ namespace EcoHarmony.Tickets.Tests
         }
 
         [Fact]
-        public void Rejects_if_quantity_over_10()
+        public void Test_rejects_if_quantity_over_10()
         {
             var service = BuildService();
             var req = ValidRequest(qty: 11);
@@ -88,7 +88,7 @@ namespace EcoHarmony.Tickets.Tests
         }
 
         [Fact]
-        public void Rejects_if_missing_payment_method()
+        public void Test_rejects_if_missing_payment_method()
         {
             var service = BuildService();
             var req = ValidRequest();
@@ -99,7 +99,7 @@ namespace EcoHarmony.Tickets.Tests
         }
 
         [Fact]
-        public void Accepts_card_payment_returns_redirect_and_sends_email()
+        public void Test_accepts_card_payment_returns_redirect_and_sends_email()
         {
             var userRepo = new Mock<IUserRepository>();
             userRepo.Setup(r => r.Exists(It.IsAny<Guid>())).Returns(true);
@@ -128,7 +128,7 @@ namespace EcoHarmony.Tickets.Tests
         }
 
         [Fact]
-        public void Accepts_cash_payment_without_redirect_and_sends_email()
+        public void Test_accepts_cash_payment_without_redirect_and_sends_email()
         {
             var userRepo = new Mock<IUserRepository>();
             userRepo.Setup(r => r.Exists(It.IsAny<Guid>())).Returns(true);
@@ -159,7 +159,7 @@ namespace EcoHarmony.Tickets.Tests
         // ---------- TESTS EXTRA PARA CERRAR GAPS DEL ENUNCIADO ----------
 
         [Fact]
-        public void Accepts_today_date_if_park_open()
+        public void Test_accepts_today_date_if_park_open()
         {
             var userRepo = new Mock<IUserRepository>();
             userRepo.Setup(r => r.Exists(It.IsAny<Guid>())).Returns(true);
@@ -191,7 +191,7 @@ namespace EcoHarmony.Tickets.Tests
         }
 
         [Fact]
-        public void Cash_payment_email_contains_count_and_date()
+        public void Test_cash_payment_email_contains_count_and_date()
         {
             var userRepo = new Mock<IUserRepository>();
             userRepo.Setup(r => r.Exists(It.IsAny<Guid>())).Returns(true);
@@ -231,7 +231,7 @@ namespace EcoHarmony.Tickets.Tests
         }
 
         [Fact]
-        public void Card_payment_confirmation_message_includes_count_and_date()
+        public void Test_card_payment_confirmation_message_includes_count_and_date()
         {
             var userRepo = new Mock<IUserRepository>();
             userRepo.Setup(r => r.Exists(It.IsAny<Guid>())).Returns(true);

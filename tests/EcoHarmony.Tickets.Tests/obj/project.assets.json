@@ -5660,19 +5660,19 @@
     ]
   },
   "packageFolders": {
-    "C:\\Users\\paula\\.nuget\\packages\\": {}
+    "/Users/florenciapavon/.nuget/packages/": {}
   },
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "C:\\Users\\paula\\OneDrive\\Documents\\Facultad\\04 - CUARTO AÑO\\ING Y CALIDAD DE SW\\tp tdd\\TDD-Comprar-Entradas-G15\\tests\\EcoHarmony.Tickets.Tests\\EcoHarmony.Tickets.Tests.csproj",
+      "projectUniqueName": "/Users/florenciapavon/Desktop/facultad/5to/Cursando/Ing y Calidad de Software/TDD-Comprar-Entradas-G15/tests/EcoHarmony.Tickets.Tests/EcoHarmony.Tickets.Tests.csproj",
       "projectName": "EcoHarmony.Tickets.Tests",
-      "projectPath": "C:\\Users\\paula\\OneDrive\\Documents\\Facultad\\04 - CUARTO AÑO\\ING Y CALIDAD DE SW\\tp tdd\\TDD-Comprar-Entradas-G15\\tests\\EcoHarmony.Tickets.Tests\\EcoHarmony.Tickets.Tests.csproj",
-      "packagesPath": "C:\\Users\\paula\\.nuget\\packages\\",
-      "outputPath": "C:\\Users\\paula\\OneDrive\\Documents\\Facultad\\04 - CUARTO AÑO\\ING Y CALIDAD DE SW\\tp tdd\\TDD-Comprar-Entradas-G15\\tests\\EcoHarmony.Tickets.Tests\\obj\\",
+      "projectPath": "/Users/florenciapavon/Desktop/facultad/5to/Cursando/Ing y Calidad de Software/TDD-Comprar-Entradas-G15/tests/EcoHarmony.Tickets.Tests/EcoHarmony.Tickets.Tests.csproj",
+      "packagesPath": "/Users/florenciapavon/.nuget/packages/",
+      "outputPath": "/Users/florenciapavon/Desktop/facultad/5to/Cursando/Ing y Calidad de Software/TDD-Comprar-Entradas-G15/tests/EcoHarmony.Tickets.Tests/obj/",
       "projectStyle": "PackageReference",
       "configFilePaths": [
-        "C:\\Users\\paula\\AppData\\Roaming\\NuGet\\NuGet.Config"
+        "/Users/florenciapavon/.nuget/NuGet/NuGet.Config"
       ],
       "originalTargetFrameworks": [
         "net7.0"
@@ -5684,8 +5684,8 @@
         "net7.0": {
           "targetAlias": "net7.0",
           "projectReferences": {
-            "C:\\Users\\paula\\OneDrive\\Documents\\Facultad\\04 - CUARTO AÑO\\ING Y CALIDAD DE SW\\tp tdd\\TDD-Comprar-Entradas-G15\\src\\EcoHarmony.Tickets.Domain\\EcoHarmony.Tickets.Domain.csproj": {
-              "projectPath": "C:\\Users\\paula\\OneDrive\\Documents\\Facultad\\04 - CUARTO AÑO\\ING Y CALIDAD DE SW\\tp tdd\\TDD-Comprar-Entradas-G15\\src\\EcoHarmony.Tickets.Domain\\EcoHarmony.Tickets.Domain.csproj"
+            "/Users/florenciapavon/Desktop/facultad/5to/Cursando/Ing y Calidad de Software/TDD-Comprar-Entradas-G15/src/EcoHarmony.Tickets.Domain/EcoHarmony.Tickets.Domain.csproj": {
+              "projectPath": "/Users/florenciapavon/Desktop/facultad/5to/Cursando/Ing y Calidad de Software/TDD-Comprar-Entradas-G15/src/EcoHarmony.Tickets.Domain/EcoHarmony.Tickets.Domain.csproj"
             }
           }
         }
@@ -5694,6 +5694,11 @@
         "warnAsError": [
           "NU1605"
         ]
+      },
+      "restoreAuditProperties": {
+        "enableAudit": "true",
+        "auditLevel": "low",
+        "auditMode": "direct"
       }
     },
     "frameworks": {
@@ -5736,12 +5741,22 @@
         ],
         "assetTargetFallback": true,
         "warn": true,
+        "downloadDependencies": [
+          {
+            "name": "Microsoft.AspNetCore.App.Ref",
+            "version": "[7.0.20, 7.0.20]"
+          },
+          {
+            "name": "Microsoft.NETCore.App.Ref",
+            "version": "[7.0.20, 7.0.20]"
+          }
+        ],
         "frameworkReferences": {
           "Microsoft.NETCore.App": {
             "privateAssets": "all"
           }
         },
-        "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\7.0.302\\RuntimeIdentifierGraph.json"
+        "runtimeIdentifierGraphPath": "/usr/local/share/dotnet/sdk/8.0.303/RuntimeIdentifierGraph.json"
       }
     }
   }

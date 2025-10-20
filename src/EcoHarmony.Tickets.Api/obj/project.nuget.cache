@@ -1,15 +1,18 @@
 {
   "version": 2,
-  "dgSpecHash": "tmoO9Sr+pCk4E+z0cza1goWsAkwuA4SDvxK9G0E6BzRRFd/Py96/UQ1i3mid3fWPnMnmHoCxx7hWJWOOczdiow==",
+  "dgSpecHash": "yNTAbm8LILk=",
   "success": true,
-  "projectFilePath": "C:\\Users\\paula\\OneDrive\\Documents\\Facultad\\04 - CUARTO AÑO\\ING Y CALIDAD DE SW\\tp tdd\\TDD-Comprar-Entradas-G15\\src\\EcoHarmony.Tickets.Api\\EcoHarmony.Tickets.Api.csproj",
+  "projectFilePath": "/Users/florenciapavon/Desktop/facultad/5to/Cursando/Ing y Calidad de Software/TDD-Comprar-Entradas-G15/src/EcoHarmony.Tickets.Api/EcoHarmony.Tickets.Api.csproj",
   "expectedPackageFiles": [
-    "C:\\Users\\paula\\.nuget\\packages\\microsoft.extensions.apidescription.server\\6.0.5\\microsoft.extensions.apidescription.server.6.0.5.nupkg.sha512",
-    "C:\\Users\\paula\\.nuget\\packages\\microsoft.openapi\\1.2.3\\microsoft.openapi.1.2.3.nupkg.sha512",
-    "C:\\Users\\paula\\.nuget\\packages\\swashbuckle.aspnetcore\\6.5.0\\swashbuckle.aspnetcore.6.5.0.nupkg.sha512",
-    "C:\\Users\\paula\\.nuget\\packages\\swashbuckle.aspnetcore.swagger\\6.5.0\\swashbuckle.aspnetcore.swagger.6.5.0.nupkg.sha512",
-    "C:\\Users\\paula\\.nuget\\packages\\swashbuckle.aspnetcore.swaggergen\\6.5.0\\swashbuckle.aspnetcore.swaggergen.6.5.0.nupkg.sha512",
-    "C:\\Users\\paula\\.nuget\\packages\\swashbuckle.aspnetcore.swaggerui\\6.5.0\\swashbuckle.aspnetcore.swaggerui.6.5.0.nupkg.sha512"
+    "/Users/florenciapavon/.nuget/packages/microsoft.extensions.apidescription.server/6.0.5/microsoft.extensions.apidescription.server.6.0.5.nupkg.sha512",
+    "/Users/florenciapavon/.nuget/packages/microsoft.openapi/1.2.3/microsoft.openapi.1.2.3.nupkg.sha512",
+    "/Users/florenciapavon/.nuget/packages/swashbuckle.aspnetcore/6.5.0/swashbuckle.aspnetcore.6.5.0.nupkg.sha512",
+    "/Users/florenciapavon/.nuget/packages/swashbuckle.aspnetcore.swagger/6.5.0/swashbuckle.aspnetcore.swagger.6.5.0.nupkg.sha512",
+    "/Users/florenciapavon/.nuget/packages/swashbuckle.aspnetcore.swaggergen/6.5.0/swashbuckle.aspnetcore.swaggergen.6.5.0.nupkg.sha512",
+    "/Users/florenciapavon/.nuget/packages/swashbuckle.aspnetcore.swaggerui/6.5.0/swashbuckle.aspnetcore.swaggerui.6.5.0.nupkg.sha512",
+    "/Users/florenciapavon/.nuget/packages/microsoft.netcore.app.ref/7.0.20/microsoft.netcore.app.ref.7.0.20.nupkg.sha512",
+    "/Users/florenciapavon/.nuget/packages/microsoft.aspnetcore.app.ref/7.0.20/microsoft.aspnetcore.app.ref.7.0.20.nupkg.sha512",
+    "/Users/florenciapavon/.nuget/packages/microsoft.netcore.app.host.osx-arm64/7.0.20/microsoft.netcore.app.host.osx-arm64.7.0.20.nupkg.sha512"
   ],
   "logs": []
 }

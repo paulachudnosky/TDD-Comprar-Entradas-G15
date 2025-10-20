@@ -1,8 +1,11 @@
 {
   "version": 2,
-  "dgSpecHash": "f6JuIdTco59S57gWiB9SzEIUpHjgjrGrIqlpJNRuUzWFi86YugvkGCjxWA2Irez7xYDLX2q+fJyOE+iQ7dxzxA==",
+  "dgSpecHash": "ASjZRJ2dLU0=",
   "success": true,
-  "projectFilePath": "C:\\Users\\paula\\OneDrive\\Documents\\Facultad\\04 - CUARTO AÑO\\ING Y CALIDAD DE SW\\tp tdd\\TDD-Comprar-Entradas-G15\\src\\EcoHarmony.Tickets.Domain\\EcoHarmony.Tickets.Domain.csproj",
-  "expectedPackageFiles": [],
+  "projectFilePath": "/Users/florenciapavon/Desktop/facultad/5to/Cursando/Ing y Calidad de Software/TDD-Comprar-Entradas-G15/src/EcoHarmony.Tickets.Domain/EcoHarmony.Tickets.Domain.csproj",
+  "expectedPackageFiles": [
+    "/Users/florenciapavon/.nuget/packages/microsoft.netcore.app.ref/7.0.20/microsoft.netcore.app.ref.7.0.20.nupkg.sha512",
+    "/Users/florenciapavon/.nuget/packages/microsoft.aspnetcore.app.ref/7.0.20/microsoft.aspnetcore.app.ref.7.0.20.nupkg.sha512"
+  ],
   "logs": []
 }

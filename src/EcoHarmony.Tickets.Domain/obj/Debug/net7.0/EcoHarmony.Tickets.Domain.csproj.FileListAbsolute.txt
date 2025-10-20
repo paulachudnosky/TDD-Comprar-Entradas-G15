@@ -1,0 +1,12 @@
+/Users/florenciapavon/Desktop/facultad/5to/Cursando/Ing y Calidad de Software/TDD-Comprar-Entradas-G15/src/EcoHarmony.Tickets.Domain/bin/Debug/net7.0/EcoHarmony.Tickets.Domain.deps.json
+/Users/florenciapavon/Desktop/facultad/5to/Cursando/Ing y Calidad de Software/TDD-Comprar-Entradas-G15/src/EcoHarmony.Tickets.Domain/bin/Debug/net7.0/EcoHarmony.Tickets.Domain.dll
+/Users/florenciapavon/Desktop/facultad/5to/Cursando/Ing y Calidad de Software/TDD-Comprar-Entradas-G15/src/EcoHarmony.Tickets.Domain/bin/Debug/net7.0/EcoHarmony.Tickets.Domain.pdb
+/Users/florenciapavon/Desktop/facultad/5to/Cursando/Ing y Calidad de Software/TDD-Comprar-Entradas-G15/src/EcoHarmony.Tickets.Domain/obj/Debug/net7.0/EcoHarmony.Tickets.Domain.GeneratedMSBuildEditorConfig.editorconfig
+/Users/florenciapavon/Desktop/facultad/5to/Cursando/Ing y Calidad de Software/TDD-Comprar-Entradas-G15/src/EcoHarmony.Tickets.Domain/obj/Debug/net7.0/EcoHarmony.Tickets.Domain.AssemblyInfoInputs.cache
+/Users/florenciapavon/Desktop/facultad/5to/Cursando/Ing y Calidad de Software/TDD-Comprar-Entradas-G15/src/EcoHarmony.Tickets.Domain/obj/Debug/net7.0/EcoHarmony.Tickets.Domain.AssemblyInfo.cs
+/Users/florenciapavon/Desktop/facultad/5to/Cursando/Ing y Calidad de Software/TDD-Comprar-Entradas-G15/src/EcoHarmony.Tickets.Domain/obj/Debug/net7.0/EcoHarmony.Tickets.Domain.csproj.CoreCompileInputs.cache
+/Users/florenciapavon/Desktop/facultad/5to/Cursando/Ing y Calidad de Software/TDD-Comprar-Entradas-G15/src/EcoHarmony.Tickets.Domain/obj/Debug/net7.0/EcoHarmony.Tickets.Domain.sourcelink.json
+/Users/florenciapavon/Desktop/facultad/5to/Cursando/Ing y Calidad de Software/TDD-Comprar-Entradas-G15/src/EcoHarmony.Tickets.Domain/obj/Debug/net7.0/EcoHarmony.Tickets.Domain.dll
+/Users/florenciapavon/Desktop/facultad/5to/Cursando/Ing y Calidad de Software/TDD-Comprar-Entradas-G15/src/EcoHarmony.Tickets.Domain/obj/Debug/net7.0/refint/EcoHarmony.Tickets.Domain.dll
+/Users/florenciapavon/Desktop/facultad/5to/Cursando/Ing y Calidad de Software/TDD-Comprar-Entradas-G15/src/EcoHarmony.Tickets.Domain/obj/Debug/net7.0/EcoHarmony.Tickets.Domain.pdb
+/Users/florenciapavon/Desktop/facultad/5to/Cursando/Ing y Calidad de Software/TDD-Comprar-Entradas-G15/src/EcoHarmony.Tickets.Domain/obj/Debug/net7.0/ref/EcoHarmony.Tickets.Domain.dll
