@@ -37,18 +37,26 @@ function load() {
     return null;
   }
   const snap = JSON.parse(raw);
-  const reg = snap.visitors.filter(v => v.passType === "Regular").length;
-  const vip = snap.visitors.filter(v => v.passType === "Vip").length;
-  const total = snap.result?.totalAmount ?? (reg*15000 + vip*25000);
+  // Support wrapper { req, res } as well as older flat shapes
+  const req = snap.req ?? snap;
+  const res = snap.res ?? snap.result ?? {};
+
+  const visitors = Array.isArray(req.visitors) ? req.visitors : [];
+  const reg = visitors.filter(v => v.passType === "Regular" || v.passType === "regular").length;
+  const vip = visitors.filter(v => v.passType === "Vip" || v.passType === "vip" || v.passType === "VIP").length;
+  const total = res.totalAmount ?? res.TotalAmount ?? (reg*15000 + vip*25000);
+
+  const buyerEmail = req.buyerEmail ?? snap.buyerEmail ?? "";
+  const visitDate = req.visitDate ?? snap.visitDate ?? "";
 
   document.getElementById("summary").innerHTML = `
     <p><strong>Resumen de compra</strong></p>
-    <p><span class="muted">Email:</span> ${snap.buyerEmail}</p>
-    <p><span class="muted">Fecha:</span> ${snap.visitDate}</p>
-    <p><span class="muted">Entradas:</span> Regulares ${reg} • VIP ${vip} (Total: ${snap.result?.ticketsCount ?? (reg+vip)})</p>
+    <p><span class="muted">Email:</span> ${buyerEmail}</p>
+    <p><span class="muted">Fecha:</span> ${visitDate}</p>
+    <p><span class="muted">Entradas:</span> Regulares ${reg} • VIP ${vip} (Total: ${res.ticketsCount ?? res.TicketsCount ?? (reg+vip)})</p>
     <p><span class="muted">Total:</span> ${fmt(total)}</p>
   `;
-  return snap;
+  return { req, res };
 }
 
 const snap = load();

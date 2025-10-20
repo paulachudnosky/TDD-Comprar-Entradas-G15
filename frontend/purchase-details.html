@@ -34,17 +34,30 @@ function render() {
     return;
   }
   const snap = JSON.parse(raw);
-  const reg = snap.visitors.filter(v => v.passType === "Regular").length;
-  const vip = snap.visitors.filter(v => v.passType === "Vip").length;
-  const totalCount = snap.result?.ticketsCount ?? (reg + vip);
-  const totalAmount = snap.result?.totalAmount ?? (reg*15000 + vip*25000);
-  const method = snap.paymentMethod === "Card" ? "Tarjeta" : "Efectivo (boletería)";
-  const redirect = snap.result?.paymentRedirectUrl;
+  // The frontend stores a wrapper: { req, res, createdAt }
+  // Older/alternate shapes might be flattened (snap.visitors, snap.result, etc.).
+  // Support both shapes for robustness.
+  const req = snap.req ?? snap; // prefer nested req, otherwise assume snap is the request
+  const res = snap.res ?? snap.result ?? {}; // prefer nested res, otherwise look for result
+
+  // Defensive fallback: ensure visitors is an array
+  const visitors = Array.isArray(req.visitors) ? req.visitors : [];
+  const reg = visitors.filter(v => v.passType === "Regular" || v.passType === "regular").length;
+  const vip = visitors.filter(v => v.passType === "Vip" || v.passType === "vip" || v.passType === "VIP").length;
+
+  const totalCount = res.ticketsCount ?? res.TicketsCount ?? (reg + vip);
+  const totalAmount = res.totalAmount ?? res.TotalAmount ?? (reg*15000 + vip*25000);
+
+  const paymentVal = req.paymentMethod ?? snap.paymentMethod ?? "Unspecified";
+  const method = paymentVal === "Card" ? "Tarjeta" : "Efectivo (boletería)";
+  const redirect = res.paymentRedirectUrl ?? res.PaymentRedirectUrl ?? null;
+  const buyerEmail = req.buyerEmail ?? snap.buyerEmail ?? "";
+  const visitDate = req.visitDate ?? snap.visitDate ?? "";
 
   target.innerHTML = `
     <p><strong>Resumen</strong></p>
-    <p><span class="muted">Email:</span> ${snap.buyerEmail}</p>
-    <p><span class="muted">Fecha:</span> ${snap.visitDate}</p>
+  <p><span class="muted">Email:</span> ${buyerEmail}</p>
+  <p><span class="muted">Fecha:</span> ${visitDate}</p>
     <p><span class="muted">Método:</span> ${method}</p>
     <p>
       <span class="chip">Regulares: ${reg}</span>
@@ -53,7 +66,7 @@ function render() {
     </p>
     <p><span class="muted">Total:</span> ${fmt(totalAmount)}</p>
     ${redirect ? `<p class="muted">Checkout: <a href="${redirect}" target="_blank" rel="noopener">${redirect}</a></p>` : ""}
-    <p style="margin-top:10px;">${snap.result?.confirmationMessage ?? ""}</p>
+  <p style="margin-top:10px;">${res.confirmationMessage ?? res.ConfirmationMessage ?? ""}</p>
   `;
 }
 render();

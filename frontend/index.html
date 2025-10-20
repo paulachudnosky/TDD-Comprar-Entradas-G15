@@ -1,106 +1,63 @@
 <!DOCTYPE html>
 <html lang="es">
-
 <head>
   <meta charset="UTF-8" />
   <title>Comprar Entradas - EcoHarmony Park</title>
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <style>
-    :root {
-      --gap: 12px;
-    }
-
     body {
       font-family: system-ui, Arial, sans-serif;
       max-width: 900px;
       margin: 24px auto;
       padding: 0 12px;
     }
-
-    h1 {
-      margin: 8px 0 16px;
-    }
+    h1 { margin-bottom: 16px; }
 
     fieldset {
-      margin-bottom: 16px;
-      border: 1px solid #ddd;
+      border: 1px solid #ccc;
       border-radius: 10px;
       padding: 12px;
+      margin-bottom: 16px;
     }
 
-    legend {
-      padding: 0 6px;
-    }
+    legend { font-weight: bold; }
 
-    label {
-      display: block;
-      margin: 6px 0;
-    }
+    label { display: block; margin: 6px 0; }
 
-    input,
-    select,
-    button {
+    input, select, button {
       padding: 10px;
       width: 100%;
       box-sizing: border-box;
     }
 
-    .row {
-      display: flex;
-      gap: var(--gap);
-      flex-wrap: wrap;
-    }
-
-    .row>div {
-      flex: 1 1 240px;
-      min-width: 220px;
-    }
-
-    .price-line {
-      display: flex;
-      justify-content: space-between;
-      margin-top: 6px;
-    }
-
-    .muted {
-      color: #666;
-      font-size: 0.95rem;
-    }
-
-    .total {
-      font-size: 1.15rem;
-      font-weight: 600;
-    }
-
-    .chips {
-      margin-top: 10px;
-    }
-
-    .chip {
-      display: inline-block;
-      padding: 6px 10px;
-      border: 1px solid #ddd;
-      border-radius: 999px;
-      margin: 4px 6px 0 0;
-    }
-
-    .ok {
-      color: #0a0;
-    }
-
-    .err {
-      color: #a00;
-    }
+    .row { display: flex; flex-wrap: wrap; gap: 12px; }
+    .row > div { flex: 1 1 240px; min-width: 220px; }
 
     .panel {
       border: 1px solid #eee;
       border-radius: 10px;
-      padding: 10px;
       background: #fafafa;
+      padding: 10px;
+      margin-top: 10px;
     }
+
+    .muted { color: #666; font-size: 0.9rem; }
+    .total { font-weight: bold; font-size: 1.1rem; }
+
+    .age-box {
+      border-radius: 8px;
+      padding: 10px;
+      margin: 6px 0;
+    }
+    .regular-box { background: #e8f9e8; border: 1px solid #b4dfb4; }
+    .vip-box { background: #e8f0ff; border: 1px solid #b4c8ff; }
+
+    .price-label { font-size: 0.85rem; color: #333; margin-top: 3px; }
+
+    .err { color: #a00; }
+    .ok { color: #0a0; }
   </style>
 </head>
-
 <body>
   <h1>Comprar Entradas</h1>
 
@@ -136,164 +93,164 @@
         <strong>Pase Regular</strong>
         <div class="muted">Precio: $15.000</div>
         <label style="margin-top:8px;">Cantidad
-          <input id="qtyRegular" type="number" min="0" max="10" value="2" />
+          <input id="qtyRegular" type="number" min="0" max="10" value="0" />
         </label>
       </div>
       <div class="panel">
         <strong>Pase VIP</strong>
         <div class="muted">Precio: $25.000</div>
         <label style="margin-top:8px;">Cantidad
-          <input id="qtyVip" type="number" min="0" max="10" value="1" />
+          <input id="qtyVip" type="number" min="0" max="10" value="0" />
         </label>
       </div>
     </div>
 
     <div class="panel" style="margin-top:12px;">
-      <div class="price-line muted"><span>Subtotal Regular</span><span id="subReg">$0</span></div>
-      <div class="price-line muted"><span>Subtotal VIP</span><span id="subVip">$0</span></div>
-      <div class="price-line total"><span>Total</span><span id="total">$0</span></div>
-      <div class="muted" style="margin-top:6px;">Máximo 10 entradas por compra.</div>
+      <div class="muted">Subtotal Regular: <span id="subReg">$0</span></div>
+      <div class="muted">Subtotal VIP: <span id="subVip">$0</span></div>
+      <div class="total">Total: <span id="total">$0</span></div>
+      <div class="muted">Máximo total de 10 entradas entre ambos tipos.</div>
     </div>
-    <div id="ageInputsContainer" class="panel" style="margin-top:12px;">
-      <strong>Edades de los visitantes</strong>
-      <div id="ageInputs" class="row" style="margin-top:8px;"></div>
-      <div class="muted">Cada visitante debe tener más de 6 años.</div>
-    </div>
+
+    <div id="agesContainer" style="margin-top:14px;"></div>
   </fieldset>
 
   <button id="buyBtn">Comprar</button>
   <div id="out" style="margin-top:16px;"></div>
 
   <script>
-    const apiBase = "http://localhost:5080"; // asegurate que coincide con tu API
     const PRICE_REG = 15000;
     const PRICE_VIP = 25000;
-    const STORAGE_KEY = "eh_last_purchase";
+    const MAX_TICKETS = 10;
+    const apiBase = "http://localhost:5080";
 
-    const $ = (id) => document.getElementById(id);
-    const fmt = (n) => n.toLocaleString('es-AR', { style: 'currency', currency: 'ARS', maximumFractionDigits: 0 });
+    const $ = id => document.getElementById(id);
+    const fmt = n => n.toLocaleString('es-AR', { style: 'currency', currency: 'ARS', maximumFractionDigits: 0 });
 
-    function recalc() {
-      const qR = parseInt($("qtyRegular").value || "0", 10);
-      const qV = parseInt($("qtyVip").value || "0", 10);
-      const subR = qR * PRICE_REG;
-      const subV = qV * PRICE_VIP;
-      const total = subR + subV;
-      $("subReg").textContent = fmt(subR);
-      $("subVip").textContent = fmt(subV);
-      $("total").textContent = fmt(total);
-    }
-    function renderAgeInputs() {
-      const container = $("ageInputs");
-      container.innerHTML = "";
-      const qR = parseInt($("qtyRegular").value || "0", 10);
-      const qV = parseInt($("qtyVip").value || "0", 10);
-      const total = qR + qV;
-
-      // Máximo 10
-      if (total > 10) return;
-
-      for (let i = 0; i < total; i++) {
-        const input = document.createElement("input");
-        input.type = "number";
-        input.min = "7";
-        input.max = "120";
-        input.placeholder = `Edad visitante ${i + 1}`;
-        input.style.width = "80px";
-        input.style.marginRight = "6px";
-        input.className = "ageInput";
-        container.appendChild(input);
-      }
-    }
-
-    // Setear min de la fecha = hoy
-    (function setMinDate() {
+    // Fecha mínima: hoy
+    (() => {
       const today = new Date();
       const iso = today.toISOString().slice(0, 10);
       $("date").setAttribute("min", iso);
     })();
 
-    $("qtyRegular").addEventListener("input", () => {
-      recalc();
-      renderAgeInputs();
-    });
-    $("qtyVip").addEventListener("input", () => {
-      recalc();
-      renderAgeInputs();
-    });
-    recalc();
-    renderAgeInputs();
-
-    function isParkOpen(dateStr) {
-      // Mantiene coherencia con tu SimpleCalendar (mié–dom abierto)
-      const d = new Date(dateStr + "T00:00:00");
-      const day = d.getUTCDay(); // 0=Dom,1=Lun,...,6=Sáb
-      return day === 0 || day === 3 || day === 4 || day === 5 || day === 6; // Dom, Mié, Jue, Vie, Sáb
+    function calcPrice(age, base) {
+      if (age === null || age === 0) return 0;
+      if (age <= 3) return 0;
+      if (age >= 4 && age <= 15) return Math.round(base / 2);
+      if (age >= 16 && age <= 59) return base;
+      if (age >= 60) return Math.round(base / 2);
+      return base;
     }
 
-    function validateForm() {
-      const errors = [];
+    function priceLabel(age, base) {
+      if (age === null || age === 0) return "—";
+      if (age <= 3) return "Gratis";
+      if (age >= 4 && age <= 15) return `Mitad ${fmt(Math.round(base / 2))}`;
+      if (age >= 16 && age <= 59) return `Completo ${fmt(base)}`;
+      if (age >= 60) return `Mitad ${fmt(Math.round(base / 2))}`;
+      return "—";
+    }
 
-      const email = $("email").value.trim();
-      const date = $("date").value;  // NO default
-      const payment = $("payment").value;
+    function enforceLimit() {
+      let qR = parseInt($("qtyRegular").value || "0", 10);
+      let qV = parseInt($("qtyVip").value || "0", 10);
+      const total = qR + qV;
+      if (total > MAX_TICKETS) {
+        const diff = total - MAX_TICKETS;
+        // Reducir el último modificado
+        if (document.activeElement.id === "qtyRegular" && qR > 0) {
+          qR -= diff;
+          $("qtyRegular").value = qR;
+        } else if (document.activeElement.id === "qtyVip" && qV > 0) {
+          qV -= diff;
+          $("qtyVip").value = qV;
+        }
+      }
+    }
+
+    function renderAges() {
+      enforceLimit();
+      const cont = $("agesContainer");
+      cont.innerHTML = "";
+
       const qR = parseInt($("qtyRegular").value || "0", 10);
       const qV = parseInt($("qtyVip").value || "0", 10);
-      const totalQty = qR + qV;
 
-      // Cantidad
-      if (totalQty <= 0) errors.push("Debés seleccionar al menos 1 entrada.");
-      if (totalQty > 10) errors.push("La cantidad de entradas no debe ser mayor a 10.");
+      if (qR === 0 && qV === 0) return;
 
-      // Edades de visitantes
-      const ageInputs = Array.from(document.querySelectorAll(".ageInput"));
-      const ages = ageInputs.map(inp => parseInt(inp.value || "0", 10));
-      if (ages.length !== totalQty)
-        errors.push("Debés ingresar la edad de todos los visitantes.");
-      else if (ages.some(a => isNaN(a) || a <= 6))
-        errors.push("Todas las edades deben ser mayores a 6 años.");
+      const regDiv = document.createElement("div");
+      const vipDiv = document.createElement("div");
 
-      // Forma de pago
-      if (payment === "Unspecified") errors.push("Debés seleccionar la forma de pago.");
-
-      // Email (validación simple)
-      if (!email) {
-        errors.push("Debés ingresar un email.");
-      } else {
-        const simpleEmail = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-        if (!simpleEmail.test(email)) errors.push("El email no tiene un formato válido.");
+      if (qR > 0) {
+        regDiv.innerHTML = `<h3>🟩 Edades de Entradas Regulares</h3>`;
+        for (let i = 0; i < qR; i++) {
+          const box = document.createElement("div");
+          box.className = "age-box regular-box";
+          box.innerHTML = `
+            <label>Edad visitante Regular ${i + 1}
+              <input type="number" min="0" max="120" class="ageInput" data-type="Regular" placeholder="Edad">
+            </label>
+            <div class="price-label" id="lblReg${i}">—</div>
+          `;
+          regDiv.appendChild(box);
+        }
       }
 
-      // Fecha requerida
-      if (!date) {
-        errors.push("Debés seleccionar la fecha de visita.");
-      } else {
-        // Fecha ≥ hoy (usando zona local)
-        const selected = new Date(date + "T00:00:00");
-        const today = new Date();
-        today.setHours(0, 0, 0, 0);
-        if (selected < today) errors.push("La fecha de visita debe ser hoy o una fecha futura.");
-
-        // Opcional: validar apertura local para feedback inmediato
-        if (!isParkOpen(date)) errors.push("El parque está cerrado en esa fecha (abre de miércoles a domingo).");
+      if (qV > 0) {
+        vipDiv.innerHTML = `<h3>🟦 Edades de Entradas VIP</h3>`;
+        for (let i = 0; i < qV; i++) {
+          const box = document.createElement("div");
+          box.className = "age-box vip-box";
+          box.innerHTML = `
+            <label>Edad visitante VIP ${i + 1}
+              <input type="number" min="0" max="120" class="ageInput" data-type="VIP" placeholder="Edad">
+            </label>
+            <div class="price-label" id="lblVip${i}">—</div>
+          `;
+          vipDiv.appendChild(box);
+        }
       }
 
-      return errors;
+      cont.appendChild(regDiv);
+      cont.appendChild(vipDiv);
+
+      document.querySelectorAll(".ageInput").forEach(inp => {
+        inp.addEventListener("input", recalc);
+      });
+
+      recalc();
     }
+
+    function recalc() {
+      const ageInputs = Array.from(document.querySelectorAll(".ageInput"));
+      let subR = 0, subV = 0;
+
+      ageInputs.forEach(inp => {
+        const val = inp.value.trim();
+        const age = val === "" ? null : parseInt(val, 10);
+        const type = inp.dataset.type;
+        const base = type === "Regular" ? PRICE_REG : PRICE_VIP;
+        const price = calcPrice(age, base);
+
+        if (type === "Regular") subR += price;
+        else subV += price;
+
+        const lbl = inp.parentElement.nextElementSibling;
+        lbl.textContent = priceLabel(age, base);
+      });
+
+      $("subReg").textContent = fmt(subR);
+      $("subVip").textContent = fmt(subV);
+      $("total").textContent = fmt(subR + subV);
+    }
+
+    $("qtyRegular").addEventListener("input", renderAges);
+    $("qtyVip").addEventListener("input", renderAges);
 
     $("buyBtn").addEventListener("click", async () => {
       const out = $("out");
       out.textContent = "Procesando…";
-
-      const errors = validateForm();
-      if (errors.length > 0) {
-        // Mostrar TODOS los errores juntos
-        out.innerHTML = `<div class="err">
-      <strong>No se puede continuar:</strong>
-      <ul>${errors.map(e => `<li>${e}</li>`).join("")}</ul>
-    </div>`;
-        return;
-      }
 
       const email = $("email").value.trim();
       const date = $("date").value;
@@ -301,26 +258,23 @@
       const qR = parseInt($("qtyRegular").value || "0", 10);
       const qV = parseInt($("qtyVip").value || "0", 10);
 
-      // Tomamos las edades desde los inputs generados dinámicamente
       const ageInputs = Array.from(document.querySelectorAll(".ageInput"));
-      const ages = ageInputs.map(inp => parseInt(inp.value || "0", 10));
-
-      const visitors = [];
-      let idx = 0;
-
-      // Regular visitors first
-      for (let i = 0; i < qR; i++) {
-        visitors.push({ age: ages[idx++] || 0, passType: "Regular" });
-      }
-      // VIP visitors
-      for (let i = 0; i < qV; i++) {
-        visitors.push({ age: ages[idx++] || 0, passType: "Vip" });
-      }
+      const visitors = ageInputs.map(inp => {
+        const age = inp.value === "" ? 0 : parseInt(inp.value, 10);
+        // Normalize passType casing to match backend enums (Regular, Vip)
+        const rawType = inp.dataset.type;
+        const passType = rawType === 'VIP' || rawType === 'vip' ? 'Vip' : 'Regular';
+        return {
+          age,
+          passType,
+          price: calcPrice(age, passType === "Regular" ? PRICE_REG : PRICE_VIP)
+        };
+      });
 
       const req = {
         userId: (crypto.randomUUID && crypto.randomUUID()) || "11111111-1111-1111-1111-111111111111",
         buyerEmail: email,
-        visitDate: date, // NO default: ya validado arriba
+        visitDate: date,
         visitors,
         paymentMethod: payment,
         currency: "ARS"
@@ -328,13 +282,11 @@
 
       try {
         $("buyBtn").disabled = true;
-
         const r = await fetch(apiBase + "/tickets/purchase", {
           method: "POST",
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify(req)
         });
-
         const data = await r.json();
 
         if (!r.ok) {
@@ -342,29 +294,13 @@
           return;
         }
 
-        // ---- NUEVO: guardamos snapshot y redirigimos según forma de pago ----
-        const snapshot = {
-          // request
-          buyerEmail: email,
-          visitDate: date,
-          paymentMethod: payment, // "Card" | "Cash"
-          visitors,
-          // response
-          result: data,
-          createdAt: new Date().toISOString()
-        };
-        localStorage.setItem(STORAGE_KEY, JSON.stringify(snapshot));
+        // Store wrapper { req, res, createdAt } so other pages can read request + response
+        localStorage.setItem("eh_last_purchase", JSON.stringify({
+          req, res: data, createdAt: new Date().toISOString()
+        }));
 
-        if (payment === "Card") {
-          // Ir al checkout simulado
-          window.location.href = "checkout.html";
-          return;
-        } else {
-          // Efectivo: ir directo a detalles de compra
-          window.location.href = "purchase-details.html";
-          return;
-        }
-        // --------------------------------------------------------------------
+        if (payment === "Card") window.location.href = "checkout.html";
+        else window.location.href = "purchase-details.html";
 
       } catch (e) {
         out.innerHTML = `<div class="err"><strong>Fallo de red:</strong> ${e.message}</div>`;
@@ -374,5 +310,4 @@
     });
   </script>
 </body>
-
 </html>
