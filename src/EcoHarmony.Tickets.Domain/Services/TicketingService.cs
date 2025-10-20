@@ -100,6 +100,9 @@ namespace EcoHarmony.Tickets.Domain.Services
             if (req.Visitors.Count > 10)
                 throw new BusinessRuleException("La cantidad de entradas no debe ser mayor a 10.");
 
+            if (req.Visitors.Any(v => v.Age <= 6))
+                throw new BusinessRuleException("La edad de todos los visitantes debe ser mayor a 6 años.");
+
             var hoy = DateOnly.FromDateTime(DateTime.UtcNow.Date);
             if (req.VisitDate < hoy)
                 throw new BusinessRuleException("La fecha de visita debe ser el día actual o futuro.");

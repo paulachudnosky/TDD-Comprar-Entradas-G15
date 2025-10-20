@@ -99,6 +99,27 @@ namespace EcoHarmony.Tickets.Tests
         }
 
         [Fact]
+        public void Rejects_if_any_visitor_age_is_6_or_less()
+        {
+            // Arrange
+            var service = BuildService();
+            var req = ValidRequest();
+            req.Visitors = new List<Visitor>
+            {
+                new Visitor { Age = 8, PassType = PassType.Regular },  // ok
+                new Visitor { Age = 5, PassType = PassType.Regular },  // invalid
+                new Visitor { Age = 10, PassType = PassType.Regular }  // ok
+            };
+
+            // Act & Assert
+            var ex = Assert.Throws<BusinessRuleException>(() => service.BuyTickets(req));
+
+            // We check the exception message contains something about age
+            Assert.Contains("edad", ex.Message, StringComparison.OrdinalIgnoreCase);
+            Assert.Contains("mayor a 6", ex.Message, StringComparison.OrdinalIgnoreCase);
+        }
+
+        [Fact]
         public void Accepts_card_payment_returns_redirect_and_sends_email()
         {
             var userRepo = new Mock<IUserRepository>();
