@@ -84,6 +84,5 @@ Desktop.ini
 *.bak
 *.old
 *.save
-src
 tests/EcoHarmony.Tickets.Tests/bin
 tests/EcoHarmony.Tickets.Tests/obj
