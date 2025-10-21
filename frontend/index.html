@@ -4,59 +4,7 @@
   <meta charset="UTF-8" />
   <title>Comprar Entradas - EcoHarmony Park</title>
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <style>
-    body {
-      font-family: system-ui, Arial, sans-serif;
-      max-width: 900px;
-      margin: 24px auto;
-      padding: 0 12px;
-    }
-    h1 { margin-bottom: 16px; }
-
-    fieldset {
-      border: 1px solid #ccc;
-      border-radius: 10px;
-      padding: 12px;
-      margin-bottom: 16px;
-    }
-
-    legend { font-weight: bold; }
-
-    label { display: block; margin: 6px 0; }
-
-    input, select, button {
-      padding: 10px;
-      width: 100%;
-      box-sizing: border-box;
-    }
-
-    .row { display: flex; flex-wrap: wrap; gap: 12px; }
-    .row > div { flex: 1 1 240px; min-width: 220px; }
-
-    .panel {
-      border: 1px solid #eee;
-      border-radius: 10px;
-      background: #fafafa;
-      padding: 10px;
-      margin-top: 10px;
-    }
-
-    .muted { color: #666; font-size: 0.9rem; }
-    .total { font-weight: bold; font-size: 1.1rem; }
-
-    .age-box {
-      border-radius: 8px;
-      padding: 10px;
-      margin: 6px 0;
-    }
-    .regular-box { background: #e8f9e8; border: 1px solid #b4dfb4; }
-    .vip-box { background: #e8f0ff; border: 1px solid #b4c8ff; }
-
-    .price-label { font-size: 0.85rem; color: #333; margin-top: 3px; }
-
-    .err { color: #a00; }
-    .ok { color: #0a0; }
-  </style>
+  <link rel="stylesheet" href="styles.css">
 </head>
 <body>
   <h1>Comprar Entradas</h1>
@@ -183,7 +131,7 @@
       const vipDiv = document.createElement("div");
 
       if (qR > 0) {
-        regDiv.innerHTML = `<h3>🟩 Edades de Entradas Regulares</h3>`;
+        regDiv.innerHTML = `<br/><h3>Edades de Entradas Regulares</h3>`;
         for (let i = 0; i < qR; i++) {
           const box = document.createElement("div");
           box.className = "age-box regular-box";
@@ -198,7 +146,7 @@
       }
 
       if (qV > 0) {
-        vipDiv.innerHTML = `<h3>🟦 Edades de Entradas VIP</h3>`;
+        vipDiv.innerHTML = `<br/><h3>Edades de Entradas VIP</h3>`;
         for (let i = 0; i < qV; i++) {
           const box = document.createElement("div");
           box.className = "age-box vip-box";
