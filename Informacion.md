@@ -149,7 +149,7 @@ Frontend simple para demo:
 
 ## 🏁 Conclusión
 
-El trabajo permitió aplicar el **Desarrollo Dirigido por Pruebas (TDD)** en un caso real, mostrando la forma en que las pruebas unitarias guían el diseño y la implementación del sistema. Conseguimos asegurar la calidad del código y detectar de forma temprana los defectos para permitir que el software evolucione de forma consistente, sin romper funcionalidades ya implementadas.
+El trabajo permitió aplicar el **Desarrollo Dirigido por Pruebas (TDD)** en un caso real, mostrando la forma en que las pruebas unitarias guían el diseño y la implementación del sistema. Conseguimos mejorar la calidad del código y detectar de forma temprana los errores para permitir que el software evolucione de forma consistente, sin romper funcionalidades ya implementadas.
 Este proyecto resalta la necesidad de tener una arquitectura basada en la separación de capas, el uso de mocks y pruebas automatizadas para aislar dependencias, y la validación de los requerimientos funcionales para generar un sistema robusto, consistente y escalable.
 
 ---
