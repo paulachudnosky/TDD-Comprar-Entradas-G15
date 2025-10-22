@@ -76,6 +76,9 @@ Arquitectura basada en **puertos y adaptadores**:
 - Los puertos permiten testear sin servicios externos.
 - El dominio no conoce los detalles de los adaptadores, sólo consume mediante los puertos.
 - Se proveen adaptadores concretos que implementen los puertosd, como API y frontend.
+
+---
+
 Esto facilita:
 - Sustituir una implementación por otra.
 - Testear la lógica de negocio aislada mockeando los puertos.
