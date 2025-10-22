@@ -134,7 +134,7 @@ Para exponer la funcionalidad al frontend, se empleó una Minimal API en ASP.NET
 
 Frontend simple para demo:
 
-El proyecto incluye un frontend mínimo (HTML + JavaScript usando fetch) como demostración de uso del API. No es un foco de diseño ni es robusto: es solo para mostrar la interacción cliente-servidor. La decisión de mantenerlo simple responde a que el objetivo principal es demostrar la lógica backend y las pruebas, no hacer una aplicación cliente compleja.
+- El proyecto incluye un frontend mínimo (HTML + JavaScript usando fetch) como demostración de uso del API. No es un foco de diseño ni es robusto: es solo para      mostrar la interacción cliente-servidor. La decisión de mantenerlo simple responde a que el objetivo principal es demostrar la lógica backend y las pruebas, no    hacer una aplicación cliente compleja.
 
 ---
 
