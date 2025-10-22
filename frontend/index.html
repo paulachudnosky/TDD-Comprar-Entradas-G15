@@ -19,11 +19,13 @@
             <label>Email del comprador
               <input id="email" type="email" placeholder="tu@email.com" required />
             </label>
+            <div class="validation-error" id="email-error"></div>
           </div>
           <div>
             <label>Fecha de visita
               <input id="date" type="date" required />
             </label>
+            <div class="validation-error" id="date-error"></div>
           </div>
           <div>
             <label>Forma de pago
@@ -33,6 +35,7 @@
                 <option value="Card">Tarjeta (Mercado Pago)</option>
               </select>
             </label>
+            <div class="validation-error" id="payment-error"></div>
           </div>
         </div>
       </fieldset>
@@ -42,20 +45,20 @@
         <div class="row">
           <div class="panel">
             <strong>Pase Regular</strong>
-            <div class="muted">Precio: $15.000</div>
+            <div class="muted">Precio: $5.000</div>
             <label style="margin-top:8px;">Cantidad
               <input id="qtyRegular" type="number" min="0" max="10" value="0" />
             </label>
+            <div class="validation-error" id="qty-error"></div>
           </div>
           <div class="panel">
             <strong>Pase VIP</strong>
-            <div class="muted">Precio: $25.000</div>
+            <div class="muted">Precio: $10.000</div>
             <label style="margin-top:8px;">Cantidad
               <input id="qtyVip" type="number" min="0" max="10" value="0" />
             </label>
           </div>
         </div>
-        
       </fieldset>
       
     </div>
@@ -79,9 +82,9 @@
 
 
   <script>
-    // --- (El código JS no necesita cambios) ---
-    const PRICE_REG = 15000;
-    const PRICE_VIP = 25000;
+    // --- CAMBIO: Constantes JS actualizadas ---
+    const PRICE_REG = 5000;
+    const PRICE_VIP = 10000;
     const MAX_TICKETS = 10;
     const apiBase = "http://localhost:5080";
 
@@ -122,9 +125,9 @@
       if(totalMsg) {
         totalMsg.textContent = `Total ${total} de ${MAX_TICKETS} entradas.`;
         if (total >= MAX_TICKETS) {
-          totalMsg.style.color = 'var(--danger)'; // Vuelve a ser rojo oscuro
+          totalMsg.style.color = 'var(--danger)'; 
         } else {
-          totalMsg.style.color = 'var(--muted)'; // Vuelve a ser gris
+          totalMsg.style.color = 'var(--muted)';
         }
       }
 
@@ -158,10 +161,9 @@
       const vipDiv = document.createElement("div");
 
       if (qR > 0) {
-        regDiv.innerHTML = `<h3>Edades de Entradas Regulares</h3>`;
+        regDiv.innerHTML = `<h3 class="fieldset-legend">Edades de Entradas Regulares</h3>`;
         for (let i = 0; i < qR; i++) {
           const box = document.createElement("div");
-          // --- CAMBIO: Asignación de clase para el nuevo color ---
           box.className = "age-box regular-box";
           box.innerHTML = `
             <label>Edad visitante Regular ${i + 1}
@@ -174,10 +176,9 @@
       }
 
       if (qV > 0) {
-        vipDiv.innerHTML = `<h3>Edades de Entradas VIP</h3>`;
+        vipDiv.innerHTML = `<h3 class="fieldset-legend">Edades de Entradas VIP</h3>`;
         for (let i = 0; i < qV; i++) {
           const box = document.createElement("div");
-          // --- CAMBIO: Asignación de clase para el nuevo color ---
           box.className = "age-box vip-box";
           box.innerHTML = `
             <label>Edad visitante VIP ${i + 1}
@@ -229,13 +230,52 @@
 
     $("buyBtn").addEventListener("click", async () => {
       const out = $("out");
-      out.textContent = "Procesando…";
+      out.innerHTML = "Procesando…";
+      
+      document.querySelectorAll('.is-invalid').forEach(el => el.classList.remove('is-invalid'));
+      document.querySelectorAll('.validation-error').forEach(el => el.textContent = ''); 
 
       const email = $("email").value.trim();
       const date = $("date").value;
       const payment = $("payment").value;
       const qR = parseInt($("qtyRegular").value || "0", 10);
       const qV = parseInt($("qtyVip").value || "0", 10);
+
+      let hasError = false; 
+
+      if (!email) {
+        $("email").classList.add('is-invalid');
+        $("email-error").textContent = "El email es obligatorio."; 
+        hasError = true;
+      } else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) { 
+        $("email").classList.add('is-invalid');
+        $("email-error").textContent = "El formato del mail es inválido."; 
+        hasError = true;
+      }
+
+      if (!date) {
+        $("date").classList.add('is-invalid');
+        $("date-error").textContent = "La fecha de visita es obligatoria."; 
+        hasError = true;
+      }
+
+      if (payment === "Unspecified") {
+        $("payment").classList.add('is-invalid');
+        $("payment-error").textContent = "La forma de pago es obligatoria."; 
+        hasError = true;
+      }
+
+      if (qR + qV === 0) {
+        $("qtyRegular").classList.add('is-invalid');
+        $("qtyVip").classList.add('is-invalid');
+        $("qty-error").textContent = "Debes seleccionar al menos 1 entrada."; 
+        hasError = true;
+      }
+
+      if (hasError) {
+        out.innerHTML = `<div class="err"><strong>Error:</strong> Revisa los campos marcados.</div>`;
+        return; 
+      }
 
       const ageInputs = Array.from(document.querySelectorAll(".ageInput"));
       const visitors = ageInputs.map(inp => {
@@ -245,6 +285,7 @@
         return {
           age,
           passType,
+          // El precio se envía al backend
           price: calcPrice(age, passType === "Regular" ? PRICE_REG : PRICE_VIP)
         };
       });
@@ -265,13 +306,47 @@
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify(req)
         });
-        const data = await r.json();
-
+        
         if (!r.ok) {
-          out.innerHTML = `<div class="err"><strong>Error:</strong> ${data.error || "Solicitud inválida"}</div>`;
-          return;
+          const data = await r.json();
+          
+          if (r.status === 400 && data.errors) {
+            let errorMessages = [];
+            const fieldMap = {
+              'BuyerEmail': 'email',
+              'VisitDate': 'date',
+              'PaymentMethod': 'payment',
+              'Visitors': 'qtyRegular'
+            };
+
+            for (const key in data.errors) {
+              const message = data.errors[key].join(', '); 
+              errorMessages.push(message);
+
+              if (fieldMap[key]) {
+                const inputId = fieldMap[key];
+                $(inputId).classList.add('is-invalid');
+                
+                let errorDivId = `${inputId}-error`;
+                if (key === 'Visitors') errorDivId = 'qty-error'; 
+                
+                if ($(errorDivId)) {
+                  $(errorDivId).textContent = message;
+                }
+                
+                if(key === 'Visitors') $("qtyVip").classList.add('is-invalid');
+              }
+            }
+            out.innerHTML = `<div class="err"><strong>Error del servidor:</strong> Revisa los campos.</div>`;
+          
+          } else {
+            out.innerHTML = `<div class="err"><strong>Error:</strong> ${data.error || r.statusText || "Solicitud inválida"}</div>`;
+          }
+          return; 
         }
 
+        const data = await r.json();
+        
         localStorage.setItem("eh_last_purchase", JSON.stringify({
           req, res: data, createdAt: new Date().toISOString()
         }));
@@ -280,7 +355,7 @@
         else window.location.href = "purchase-details.html";
 
       } catch (e) {
-        out.innerHTML = `<div class="err"><strong>Fallo de red:</strong> ${e.message}</div>`;
+        out.innerHTML = `<div class"err"><strong>Fallo de red:</strong> No se pudo conectar al servidor.</div>`;
       } finally {
         $("buyBtn").disabled = false;
       }
