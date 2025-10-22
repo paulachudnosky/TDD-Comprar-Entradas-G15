@@ -9,64 +9,77 @@
 <body>
   <h1>Comprar Entradas</h1>
 
-  <fieldset>
-    <legend>Datos de compra</legend>
-    <div class="row">
-      <div>
-        <label>Email del comprador
-          <input id="email" type="email" placeholder="tu@email.com" required />
-        </label>
+  <div class="main-layout">
+
+    <div class="main-form-col">
+      <fieldset>
+        <h3 class="fieldset-legend">Datos de compra</h3>
+        <div class="row">
+          <div>
+            <label>Email del comprador
+              <input id="email" type="email" placeholder="tu@email.com" required />
+            </label>
+          </div>
+          <div>
+            <label>Fecha de visita
+              <input id="date" type="date" required />
+            </label>
+          </div>
+          <div>
+            <label>Forma de pago
+              <select id="payment">
+                <option value="Unspecified">-- Seleccionar --</option>
+                <option value="Cash">Efectivo (boletería)</option>
+                <option value="Card">Tarjeta (Mercado Pago)</option>
+              </select>
+            </label>
+          </div>
+        </div>
+      </fieldset>
+
+      <fieldset>
+        <h3 class="fieldset-legend">Entradas</h3>
+        <div class="row">
+          <div class="panel">
+            <strong>Pase Regular</strong>
+            <div class="muted">Precio: $15.000</div>
+            <label style="margin-top:8px;">Cantidad
+              <input id="qtyRegular" type="number" min="0" max="10" value="0" />
+            </label>
+          </div>
+          <div class="panel">
+            <strong>Pase VIP</strong>
+            <div class="muted">Precio: $25.000</div>
+            <label style="margin-top:8px;">Cantidad
+              <input id="qtyVip" type="number" min="0" max="10" value="0" />
+            </label>
+          </div>
+        </div>
+        
+      </fieldset>
+      
+    </div>
+    <div class="main-ages-col">
+      
+      <div id="agesContainer" class="ages-scroll-area">
+        <p class="muted" style="padding:10px;">Agrega entradas a la izquierda para registrar las edades de los visitantes.</p>
       </div>
-      <div>
-        <label>Fecha de visita
-          <input id="date" type="date" required />
-        </label>
-      </div>
-      <div>
-        <label>Forma de pago
-          <select id="payment">
-            <option value="Unspecified">-- Seleccionar --</option>
-            <option value="Cash">Efectivo (boletería)</option>
-            <option value="Card">Tarjeta (Mercado Pago)</option>
-          </select>
-        </label>
+
+      <div class="card" style="margin-top:16px;">
+        <div class="muted">Subtotal Regular: <span id="subReg">$0</span></div>
+        <div class="muted">Subtotal VIP: <span id="subVip">$0</span></div>
+        <div class="total">Total: <span id="total">$0</span></div>
+        <div class="muted" id="total-tickets-message">Máximo total de 10 entradas entre ambos tipos.</div>
+      
+        <button id="buyBtn" style="width: 100%; margin-top: 16px;">Comprar</button>
+        <div id="out" style="margin-top:16px;"></div>
       </div>
     </div>
-  </fieldset>
-
-  <fieldset>
-    <legend>Entradas</legend>
-    <div class="row">
-      <div class="panel">
-        <strong>Pase Regular</strong>
-        <div class="muted">Precio: $15.000</div>
-        <label style="margin-top:8px;">Cantidad
-          <input id="qtyRegular" type="number" min="0" max="10" value="0" />
-        </label>
-      </div>
-      <div class="panel">
-        <strong>Pase VIP</strong>
-        <div class="muted">Precio: $25.000</div>
-        <label style="margin-top:8px;">Cantidad
-          <input id="qtyVip" type="number" min="0" max="10" value="0" />
-        </label>
-      </div>
     </div>
 
-    <div class="panel" style="margin-top:12px;">
-      <div class="muted">Subtotal Regular: <span id="subReg">$0</span></div>
-      <div class="muted">Subtotal VIP: <span id="subVip">$0</span></div>
-      <div class="total">Total: <span id="total">$0</span></div>
-      <div class="muted">Máximo total de 10 entradas entre ambos tipos.</div>
-    </div>
-
-    <div id="agesContainer" style="margin-top:14px;"></div>
-  </fieldset>
-
-  <button id="buyBtn">Comprar</button>
-  <div id="out" style="margin-top:16px;"></div>
 
   <script>
+    // --- (El código JS no necesita cambios) ---
     const PRICE_REG = 15000;
     const PRICE_VIP = 25000;
     const MAX_TICKETS = 10;
@@ -104,9 +117,19 @@
       let qR = parseInt($("qtyRegular").value || "0", 10);
       let qV = parseInt($("qtyVip").value || "0", 10);
       const total = qR + qV;
+      
+      const totalMsg = $("total-tickets-message");
+      if(totalMsg) {
+        totalMsg.textContent = `Total ${total} de ${MAX_TICKETS} entradas.`;
+        if (total >= MAX_TICKETS) {
+          totalMsg.style.color = 'var(--danger)'; // Vuelve a ser rojo oscuro
+        } else {
+          totalMsg.style.color = 'var(--muted)'; // Vuelve a ser gris
+        }
+      }
+
       if (total > MAX_TICKETS) {
         const diff = total - MAX_TICKETS;
-        // Reducir el último modificado
         if (document.activeElement.id === "qtyRegular" && qR > 0) {
           qR -= diff;
           $("qtyRegular").value = qR;
@@ -118,22 +141,27 @@
     }
 
     function renderAges() {
-      enforceLimit();
+      enforceLimit(); 
       const cont = $("agesContainer");
-      cont.innerHTML = "";
+      cont.innerHTML = ""; 
 
       const qR = parseInt($("qtyRegular").value || "0", 10);
       const qV = parseInt($("qtyVip").value || "0", 10);
 
-      if (qR === 0 && qV === 0) return;
+      if (qR === 0 && qV === 0) {
+        cont.innerHTML = '<p class="muted" style="padding:10px;">Agrega entradas a la izquierda para registrar las edades de los visitantes.</p>';
+        recalc(); 
+        return; 
+      }
 
       const regDiv = document.createElement("div");
       const vipDiv = document.createElement("div");
 
       if (qR > 0) {
-        regDiv.innerHTML = `<br/><h3>Edades de Entradas Regulares</h3>`;
+        regDiv.innerHTML = `<h3>Edades de Entradas Regulares</h3>`;
         for (let i = 0; i < qR; i++) {
           const box = document.createElement("div");
+          // --- CAMBIO: Asignación de clase para el nuevo color ---
           box.className = "age-box regular-box";
           box.innerHTML = `
             <label>Edad visitante Regular ${i + 1}
@@ -146,9 +174,10 @@
       }
 
       if (qV > 0) {
-        vipDiv.innerHTML = `<br/><h3>Edades de Entradas VIP</h3>`;
+        vipDiv.innerHTML = `<h3>Edades de Entradas VIP</h3>`;
         for (let i = 0; i < qV; i++) {
           const box = document.createElement("div");
+          // --- CAMBIO: Asignación de clase para el nuevo color ---
           box.className = "age-box vip-box";
           box.innerHTML = `
             <label>Edad visitante VIP ${i + 1}
@@ -196,6 +225,8 @@
     $("qtyRegular").addEventListener("input", renderAges);
     $("qtyVip").addEventListener("input", renderAges);
 
+    renderAges();
+
     $("buyBtn").addEventListener("click", async () => {
       const out = $("out");
       out.textContent = "Procesando…";
@@ -209,7 +240,6 @@
       const ageInputs = Array.from(document.querySelectorAll(".ageInput"));
       const visitors = ageInputs.map(inp => {
         const age = inp.value === "" ? 0 : parseInt(inp.value, 10);
-        // Normalize passType casing to match backend enums (Regular, Vip)
         const rawType = inp.dataset.type;
         const passType = rawType === 'VIP' || rawType === 'vip' ? 'Vip' : 'Regular';
         return {
@@ -242,7 +272,6 @@
           return;
         }
 
-        // Store wrapper { req, res, createdAt } so other pages can read request + response
         localStorage.setItem("eh_last_purchase", JSON.stringify({
           req, res: data, createdAt: new Date().toISOString()
         }));

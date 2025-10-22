@@ -1,26 +1,37 @@
+@import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700&display=swap');
+
 :root {
   /* Palette provided by user */
   --eh-900: #134611; /* darkest */
-  --eh-800: #3E8914;
-  --eh-600: #3DA35D;
-  --eh-400: #96E072;
-  --eh-100: #E8FCCF; /* lightest */
+  --eh-800: #3e8914;
+  --eh-600: #3da35d;
+  --eh-400: #96e072; /* Color de fondo de página pedido */
+  --eh-100: #e8fccf; /* Color de tarjeta pedido */
 
-  --bg: var(--eh-100);
-  --card-bg: #ffffff;
+  --bg: var(--eh-100); /* <- Este valor ya no se usa en body */
+  --card-bg: #ffffff; /* <- Este valor ya no se usa en card */
   --muted: #5a5a5a;
   --danger: #b71c1c;
+  --danger-light: #ffcdd2;
   --radius: 10px;
+  --radius-sm: 8px;
 }
 
 /* Global reset / base */
-* { box-sizing: border-box; }
-html,body { height: 100%; }
+* {
+  box-sizing: border-box;
+}
+html,
 body {
-  font-family: Inter, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial;
+  height: 100%;
+}
+body {
+  font-family: Montserrat, system-ui, -apple-system, 'Segoe UI', Roboto,
+    'Helvetica Neue', Arial;
   margin: 0;
   padding: 24px 12px;
-  background: linear-gradient(180deg, var(--bg) 0%, #f7ffef 100%);
+  /* --- CAMBIO: Color de fondo de página --- */
+  background: var(--eh-400);
   color: var(--eh-900);
   -webkit-font-smoothing: antialiased;
   max-width: 960px;
@@ -28,69 +39,341 @@ body {
   margin-right: auto;
 }
 
-h1, h2, h3 { color: var(--eh-900); margin-top: 0; }
+h1,
+h2,
+h3 {
+  color: var(--eh-900);
+  margin-top: 0;
+  margin-bottom: 16px;
+}
+.container {
+  max-width: 960px;
+  margin: 0 auto;
+  padding: 0 12px;
+}
+.row {
+  display: flex;
+  gap: 12px;
+  flex-wrap: wrap;
+}
 
-/* Layout helpers */
-.container { max-width: 960px; margin: 0 auto; padding: 0 12px; }
-.row { display:flex; gap:12px; flex-wrap:wrap; }
-
-/* Cards / panels */
-.card, .panel, fieldset {
-  /* background: linear-gradient(180deg, var(--card-bg), #134611); */
-  /* background: linear-gradient(180deg, var(--card-bg), #3e8914); */
-  /* background: linear-gradient(180deg, var(--card-bg), #3DA35D); */
-  background: linear-gradient(180deg, var(--card-bg), #96E072);
-  /* background: linear-gradient(180deg, var(--card-bg), #E8FCCF); */
+/* --- CAMBIO: Color de fondo de tarjetas --- */
+.card,
+fieldset {
+  background: var(--eh-100); /* Fondo verde claro/crema */
+  color: var(--eh-900);
   border-radius: var(--radius);
-  border: 1px solid rgba(19,70,17,0.08);
-  padding: 12px;  
+  border: 1px solid rgba(19, 70, 17, 0.1); /* Borde un poco más oscuro */
+  padding: 16px;
+  box-shadow: 0 4px 12px rgba(19, 70, 17, 0.1); /* Sombra más notoria */
+  margin-bottom: 16px;
 }
 
-fieldset { border: none; padding: 0; }
-legend { font-weight: 600; margin-bottom: 8px; }
-
-/* Forms */
-label { display:block; margin-bottom: 6px; }
-input[type="text"], input[type="email"], input[type="number"], input[type="date"], select {
-  width:100%; padding:10px 12px; border-radius:8px; border:1px solid rgba(0,0,0,0.08);
-  background: #fff; color: inherit;
+fieldset {
+  border: none;
+  padding: 20px;
 }
 
+/* Estilo para el <h3> que reemplaza a <legend> */
+.fieldset-legend {
+  font-weight: 600;
+  font-size: 1.1rem;
+  color: var(--eh-900);
+  margin-bottom: 12px;
+  padding: 0;
+  margin-top: 0;
+}
+
+/* Paneles internos (siguen siendo casi-blancos, buen contraste) */
+/* --- CAMBIO: Eliminar los "cuadrados" blancos del panel --- */
+.panel {
+  background: transparent; /* Quita el fondo blanco */
+  border: none; /* Quita el borde */
+  padding: 0; /* Quita el padding para que se alinee el contenido */
+  width: 100%;
+}
+
+/* Formularios (se ven bien sobre fondo --eh-100) */
+label {
+  display: block;
+  margin-bottom: 6px;
+  font-weight: 600;
+  font-size: 0.9rem;
+  color: var(--eh-900);
+}
+.card .muted,
+fieldset .muted {
+  color: var(--muted);
+}
+
+input[type='text'],
+input[type='email'],
+input[type='number'],
+input[type='date'],
+select {
+  width: 100%;
+  padding: 12px 14px;
+  border-radius: var(--radius-sm);
+  border: 1px solid rgba(19, 70, 17, 0.15);
+  background: #fff;
+  color: inherit;
+  font-family: Montserrat, system-ui, sans-serif;
+  font-size: 1rem;
+  line-height: 1.5;
+  transition: border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
+}
+select option {
+  color: inherit;
+  background: #fff;
+}
+
+input[type='text']:focus,
+input[type='email']:focus,
+input[type='number']:focus,
+input[type='date']:focus,
+select:focus {
+  border-color: var(--eh-600);
+  outline: 0;
+  box-shadow: 0 0 0 0.25rem rgba(61, 163, 93, 0.25);
+}
+
+/* --- CAMBIO: Botón de Comprar --- */
 button {
-  background: linear-gradient(180deg, var(--eh-800), var(--eh-900));
-  color: white; border: none; padding: 10px 16px; border-radius: 10px; cursor: pointer;
-  box-shadow: 0 6px 18px rgba(19,70,17,0.12);
+  background: var(--eh-900); /* Color sólido #134611 */
+  color: white;
+  border: none;
+  padding: 12px 18px;
+  border-radius: var(--radius-sm);
+  cursor: pointer;
+  /* Sombra más "cool" */
+  box-shadow: 0 4px 12px rgba(19, 70, 17, 0.25);
+  font-family: Montserrat, system-ui, sans-serif;
+  font-weight: 600;
+  font-size: 0.95rem;
+  transition: all 0.15s ease-in-out; /* Animación "cool" */
 }
-button[disabled] { opacity: 0.6; cursor: not-allowed; }
+button:hover {
+  /* Animación "cool" de levantar y sombra más grande */
+  box-shadow: 0 6px 16px rgba(19, 70, 17, 0.35);
+  transform: translateY(-2px);
+}
 
-.btn-ghost { background: transparent; color: var(--eh-900); border: 1px solid rgba(19,70,17,0.08); }
+button[disabled] {
+  opacity: 0.6;
+  cursor: not-allowed;
+  transform: none;
+  box-shadow: 0 4px 10px rgba(19, 70, 17, 0.12);
+}
 
-.muted { color: var(--muted); }
-.total { font-weight: 700; font-size: 1.05rem; }
+/* Botón de Error (actualizado para que no tenga gradiente) */
+button.err {
+  background: var(--danger);
+  box-shadow: 0 4px 12px rgba(183, 28, 28, 0.25);
+}
+button.err:hover {
+  box-shadow: 0 6px 16px rgba(183, 28, 28, 0.35);
+  transform: translateY(-2px);
+}
 
-.age-box { border-radius: 8px; padding: 10px; margin: 6px 0; }
-.regular-box { background: linear-gradient(180deg, #f6fff6, var(--eh-100)); border:1px solid rgba(61,163,93,0.12); }
+.total {
+  font-weight: 700;
+  font-size: 1.1rem;
+  margin-top: 4px;
+  color: var(--eh-900);
+}
+
+.card .err,
+#out .err {
+  color: var(--danger);
+  font-weight: 600;
+}
+.card .ok,
+#out .ok {
+  color: var(--eh-900);
+  font-weight: 600;
+}
+#out {
+  font-weight: 600;
+}
+
+.chip {
+  display: inline-block;
+  padding: 6px 10px;
+  border-radius: 999px;
+  background: rgba(19, 70, 17, 0.06);
+  color: var(--eh-900);
+  border: 1px solid rgba(19, 70, 17, 0.08);
+  font-size: 0.9rem;
+  margin: 2px;
+}
+
+@media (max-width: 640px) {
+  .row {
+    flex-direction: column;
+  }
+  body {
+    padding: 12px 8px;
+  }
+  fieldset {
+    padding: 16px;
+  }
+}
+
+/* --- Layout y Tarjetas de Edad --- */
+
+.main-layout {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 24px;
+}
+.main-form-col {
+  flex: 2;
+  min-width: 350px;
+  /* --- NUEVO: Convertir en columna flex --- */
+  display: flex;
+  flex-direction: column;
+}
+.main-ages-col {
+  flex: 1;
+  min-width: 300px;
+  padding-top: 0;
+  /* --- NUEVO: Convertir en columna flex --- */
+  display: flex;
+  flex-direction: column;
+}
+/* --- NUEVO: Hacer que el último 'fieldset' de la izquierda crezca --- */
+/* Esto fuerza a la tarjeta "Entradas" a estirarse */
+.main-form-col > fieldset:last-of-type {
+  flex-grow: 1;
+}
+/* --- CAMBIO: Área de scroll usa el nuevo fondo de tarjeta --- */
+.ages-scroll-area {
+  height: 500px;
+  overflow-y: auto;
+  padding: 12px;
+  background: var(--eh-100); /* Fondo verde claro/crema */
+  border-radius: var(--radius);
+  border: 1px solid rgba(19, 70, 17, 0.1); /* Borde un poco más oscuro */
+}
+.ages-scroll-area h3 {
+  font-size: 1.05rem;
+  margin-top: 16px;
+  margin-bottom: 8px;
+  padding-bottom: 6px;
+  color: var(--eh-900);
+}
+.ages-scroll-area h3:first-child {
+  margin-top: 0;
+}
+
+/* --- CAMBIO: Colores de tarjetas de edad (corregidos v3) --- */
+.age-box {
+  border-radius: var(--radius-sm);
+  padding: 12px;
+  margin: 8px 0;
+  box-shadow: 0 2px 4px rgba(19, 70, 17, 0.03);
+  transition: all 0.2s ease;
+}
+.regular-box {
+  background: #3da35d; /* Color 1 */
+  border: 1px solid var(--eh-600);
+  color: var(--eh-900); /* Texto oscuro */
+}
 .vip-box {
-  background: linear-gradient(180deg, #134611, rgba(19,70,17,0.9));
-  border: 1px solid rgba(19,70,17,0.9);
-  color: #e8fdec; /* light text for contrast */
+  background: #3e8914; /* Color 2 */
+  border: 1px solid var(--eh-800);
+  color: #ffffff; /* Texto blanco puro */
 }
 
-/* Ensure inputs and labels inside vip-box are readable */
-.vip-box label, .vip-box .price-label { color: #e8fdec; }
-.vip-box input, .vip-box select { background: rgba(255,255,255,0.06); color: #fff; border: 1px solid rgba(255,255,255,0.12); }
+/* Labels y Price Labels */
+.regular-box label,
+.regular-box .price-label {
+  color: var(--eh-900);
+}
+.vip-box label,
+.vip-box .price-label {
+  color: #ffffff;
+}
 
-.price-label { font-size: 0.85rem; color: #333; margin-top: 3px; }
-.err { color: var(--eh-100);}
-.ok { color: var(--eh-100); }
+/* Input para .regular-box */
+.regular-box input {
+  background: rgba(255, 255, 255, 0.3);
+  color: var(--eh-900);
+  border: 1px solid rgba(19, 70, 17, 0.2);
+}
+.regular-box input:focus {
+  border-color: var(--eh-900);
+  box-shadow: 0 0 0 0.25rem rgba(19, 70, 17, 0.25);
+}
 
-/* Small UI chips */
-.chip { display:inline-block; padding:6px 10px; border-radius:999px; background: rgba(19,70,17,0.06); color: var(--eh-900); border: 1px solid rgba(19,70,17,0.08); }
+/* --- NUEVO: Placeholder para .regular-box --- */
+.regular-box input::placeholder {
+  color: var(--eh-900);
+  opacity: 0.7; /* Hacerlo un poco más sutil que el texto real */
+}
 
-/* Utility spacing */
-.spacer { height: 12px; }
+/* Input para .vip-box */
+.vip-box input {
+  background: rgba(0, 0, 0, 0.1);
+  color: #fff;
+  border: 1px solid rgba(255, 255, 255, 0.12);
+}
+.vip-box input:focus {
+  border-color: var(--eh-400);
+  box-shadow: 0 0 0 0.25rem rgba(232, 252, 207, 0.25);
+}
 
-/* Responsive adjustments */
-@media (max-width:640px) {
-  .row { flex-direction: column; }
+/* --- NUEVO: Placeholder para .vip-box --- */
+.vip-box input::placeholder {
+  color: #ffffff;
+  opacity: 0.7; /* Hacerlo un poco más sutil que el texto real */
+}
+
+/* --- FIN NUEVO --- */
+
+.price-label {
+  font-size: 0.9rem;
+  color: var(--muted); /* Regla base (para tarjetas blancas) */
+  margin-top: 4px;
+  font-weight: 600;
+}
+/* Sobreescritura para price-label dentro de las tarjetas de color */
+.regular-box .price-label {
+  color: var(--eh-900);
+}
+.vip-box .price-label {
+  color: #ffffff;
+}
+/* --- FIN DEL CAMBIO --- */
+
+/* Scrollbar con paleta (sin cambios) */
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+::-webkit-scrollbar-track {
+  background: rgba(19, 70, 17, 0.05);
+  border-radius: 10px;
+}
+::-webkit-scrollbar-thumb {
+  background: var(--eh-600);
+  border-radius: 10px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: var(--eh-800);
+}
+
+/* Responsive (sin cambios) */
+@media (max-width: 768px) {
+  .main-layout {
+    flex-direction: column;
+  }
+  .main-form-col,
+  .main-ages-col {
+    flex: 1 1 100%;
+    padding-top: 0;
+  }
+  .ages-scroll-area {
+    height: 300px;
+  }
 }
