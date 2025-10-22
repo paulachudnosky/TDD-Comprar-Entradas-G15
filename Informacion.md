@@ -72,11 +72,14 @@ TDD-Comprar-Entradas-G15/
 ```
 
 Arquitectura basada en **puertos y adaptadores**:
-- Dominio no depende de infraestructura.  
-- Interfaces (ports) permiten testear sin servicios externos.  
-- API y frontend son adaptadores que consumen el dominio.
-
----
+- Se definen puertos que describen operaciones que el dominio necesita para persistencia, consulta, etc.
+- Los puertos permiten testear sin servicios externos.
+- El dominio no conoce los detalles de los adaptadores, sólo consume mediante los puertos.
+- Se proveen adaptadores concretos que implementen los puertosd, como API y frontend.
+Esto facilita:
+- Sustituir una implementación por otra.
+- Testear la lógica de negocio aislada mockeando los puertos.
+- Mantener el dominio limpio de dependencias externas.
 
 ---
 
@@ -92,6 +95,46 @@ Arquitectura basada en **puertos y adaptadores**:
 
 ---
 
+## 🔧 Decisiones técnicas
+
+.NET 8:
+
+- Se eligió la versión .NET 8 por su soporte actualizado, mejoras de rendimiento y compatibilidad con Minimal API. Además, es una versión moderna que permite        aprovechar características recientes del framework.
+
+---
+
+xUnit como framework de pruebas:
+
+- xUnit es uno de los frameworks más utilizados en el ecosistema .NET. Permite una buena integración con .NET, paralelismo de pruebas, atributos de configuración    clara, etc. Su uso es una decisión estándar y confiable.
+
+---
+
+Moq para mocking:
+
+- Moq es una librería madura y popular para crear mocks en .NET. Permite configurar comportamientos esperados, verificar invocaciones, etc. Usarla facilita aislar   dependencias en tests unitarios.
+
+---
+
+API HTTP con Minimal API:
+
+Para exponer la funcionalidad al frontend, se empleó una Minimal API en ASP.NET Core. Esto se debe a que:
+
+- La funcionalidad es relativamente sencilla.
+
+- Minimal API permite definir rutas de forma más clara, con menos configuración.
+
+- Mantiene más conectada la lógica de exposición con facilidad de lectura y acoplamiento mínimo.
+
+- Permite centrarse en la lógica de negocio y los adaptadores, sin demasiado peso en la capa HTTP.
+
+---
+
+Frontend simple para demo:
+
+El proyecto incluye un frontend mínimo (HTML + JavaScript usando fetch) como demostración de uso del API. No es un foco de diseño ni es robusto: es solo para mostrar la interacción cliente-servidor. La decisión de mantenerlo simple responde a que el objetivo principal es demostrar la lógica backend y las pruebas, no hacer una aplicación cliente compleja.
+
+---
+
 ## 📊 Resultados
 
 - Todos los criterios de aceptación validados por tests automáticos.  
@@ -103,9 +146,8 @@ Arquitectura basada en **puertos y adaptadores**:
 
 ## 🏁 Conclusión
 
-El trabajo permitió aplicar el **Desarrollo Dirigido por Pruebas (TDD)** en un caso real.  
-Se evidenció cómo los tests guían la implementación, garantizan calidad y permiten evolucionar el sistema sin temor a romper funcionalidades existentes.  
-El proyecto demuestra la importancia de la **separación de capas**, el uso de **mocks**, y la validación automática de requisitos funcionales.
+El trabajo permitió aplicar el **Desarrollo Dirigido por Pruebas (TDD)** en un caso real, mostrando la forma en que las pruebas unitarias guían el diseño y la implementación del sistema. Conseguimos asegurar la calidad del código y detectar de forma temprana los defectos para permitir que el software evolucione de forma consistente, sin romper funcionalidades ya implementadas.
+Este proyecto resalta la necesidad de tener una arquitectura basada en la separación de capas, el uso de mocks y pruebas automatizadas para aislar dependencias, y la validación de los requerimientos funcionales para generar un sistema robusto, consistente y escalable.
 
 ---
 
