@@ -24,8 +24,26 @@ namespace EcoHarmony.Tickets.Domain.Services
         {
             Validate(request);
 
-            // Precios demo (placeholder)
-            decimal total = request.Visitors.Sum(v => v.PassType == PassType.Vip ? 25000m : 15000m);
+            // Precios demo (placeholder) — calcular precio por visitante aplicando descuentos por edad
+            decimal total = 0m;
+            decimal PriceForVisitor(Visitor vis)
+            {
+                var basePrice = vis.PassType == PassType.Vip ? 25000m : 15000m;
+                var age = vis.Age;
+                if (age == 0) return 0m; // unspecified age -> treat as 0
+                if (age <= 3) return 0m;
+                if (age >= 4 && age <= 15) return Math.Round(basePrice / 2);
+                if (age >= 16 && age <= 59) return basePrice;
+                if (age >= 60) return Math.Round(basePrice / 2);
+                return basePrice;
+            }
+
+            foreach (var v in request.Visitors)
+            {
+                var p = PriceForVisitor(v);
+                v.Price = p; // store calculated price on the visitor entity
+                total += p;
+            }
 
             string? redirect = null;
             bool payAtCounter = false;
@@ -51,6 +69,9 @@ namespace EcoHarmony.Tickets.Domain.Services
                 Currency = request.Currency
             };
 
+            // Include visitor breakdown (age, pass type, calculated price)
+            result.Visitors = request.Visitors.Select(v => new Visitor { Age = v.Age, PassType = v.PassType, Price = v.Price }).ToList();
+
             // --- INICIA LA MEJORA DEL EMAIL ---
 
             // 1. Define un asunto claro
@@ -71,7 +92,7 @@ namespace EcoHarmony.Tickets.Domain.Services
                     <hr>
                     <p><strong>Número de entradas:</strong> {request.Visitors.Count}</p>
                     <p><strong>Fecha de visita:</strong> {request.VisitDate:dddd, dd 'de' MMMM 'de' yyyy}</p>
-                    <p><strong>Monto Total:</strong> {total:C} {request.Currency}</p>
+                    <p><strong>Monto Total:</strong> {result.TotalAmount:C} {result.Currency}</p>
                     <hr>
                     <p>{paymentInfo}</p>
                     <br>

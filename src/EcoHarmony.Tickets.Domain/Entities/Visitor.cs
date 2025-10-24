@@ -6,5 +6,7 @@ namespace EcoHarmony.Tickets.Domain.Entities
     {
         public int Age { get; set; }
         public PassType PassType { get; set; }
+        public decimal Price { get; set; }
+
     }
 }

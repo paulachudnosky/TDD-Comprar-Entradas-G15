@@ -46,7 +46,11 @@ function render() {
   const vip = visitors.filter(v => v.passType === "Vip" || v.passType === "vip" || v.passType === "VIP").length;
 
   const totalCount = res.ticketsCount ?? res.TicketsCount ?? (reg + vip);
-  const totalAmount = res.totalAmount ?? res.TotalAmount ?? (reg*15000 + vip*25000);
+  // Prefer the total provided by the backend result. Avoid falling back to full-price arithmetic
+  // because that may expose undiscounted values. If total isn't provided, show an explanatory
+  // message instead of calculating a possibly incorrect full price.
+  const totalAmount = res.totalAmount ?? res.TotalAmount ?? null;
+  const totalDisplay = totalAmount != null ? fmt(totalAmount) : '<span class="muted">Total calculado durante la compra</span>';
 
   const paymentVal = req.paymentMethod ?? snap.paymentMethod ?? "Unspecified";
   const method = paymentVal === "Card" ? "Tarjeta" : "Efectivo (boletería)";
@@ -64,7 +68,7 @@ function render() {
       <span class="chip">VIP: ${vip}</span>
       <span class="chip">Total entradas: ${totalCount}</span>
     </p>
-    <p><span class="muted">Total:</span> ${fmt(totalAmount)}</p>
+  <p><span class="muted">Total:</span> ${totalDisplay}</p>
     ${redirect ? `<p class="muted">Checkout: <a href="${redirect}" target="_blank" rel="noopener">${redirect}</a></p>` : ""}
   <p style="margin-top:10px;">${res.confirmationMessage ?? res.ConfirmationMessage ?? ""}</p>
   `;
