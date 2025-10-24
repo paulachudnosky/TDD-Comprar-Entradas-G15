@@ -24,8 +24,26 @@ namespace EcoHarmony.Tickets.Domain.Services
         {
             Validate(request);
 
-            // Precios demo (placeholder)
-            decimal total = request.Visitors.Sum(v => v.PassType == PassType.Vip ? 25000m : 15000m);
+            // Precios demo (placeholder) — calcular precio por visitante aplicando descuentos por edad
+            decimal total = 0m;
+            decimal PriceForVisitor(Visitor vis)
+            {
+                var basePrice = vis.PassType == PassType.Vip ? 25000m : 15000m;
+                var age = vis.Age;
+                if (age == 0) return 0m; // unspecified age -> treat as 0
+                if (age <= 3) return 0m;
+                if (age >= 4 && age <= 15) return Math.Round(basePrice / 2);
+                if (age >= 16 && age <= 59) return basePrice;
+                if (age >= 60) return Math.Round(basePrice / 2);
+                return basePrice;
+            }
+
+            foreach (var v in request.Visitors)
+            {
+                var p = PriceForVisitor(v);
+                v.Price = p; // set calculated price on request visitor
+                total += p;
+            }
 
             string? redirect = null;
             bool payAtCounter = false;
@@ -50,6 +68,9 @@ namespace EcoHarmony.Tickets.Domain.Services
                 TotalAmount = total,
                 Currency = request.Currency
             };
+
+            // Include visitor breakdown in the result (age, pass type, calculated price)
+            result.Visitors = request.Visitors.Select(v => new Visitor { Age = v.Age, PassType = v.PassType, Price = v.Price }).ToList();
 
             // --- INICIA LA MEJORA DEL EMAIL ---
 

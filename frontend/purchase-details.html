@@ -39,7 +39,12 @@ function render() {
   const vip = visitors.filter(v => v.passType === "Vip" || v.passType === "vip" || v.passType === "VIP").length;
 
   const totalCount = res.ticketsCount ?? res.TicketsCount ?? (reg + vip);
-  const totalAmount = res.totalAmount ?? res.TotalAmount ?? (reg*15000 + vip*25000);
+  // Prefer backend-provided total; do not fallback to full-price arithmetic to avoid exposing undiscounted values
+  const totalAmount = res.totalAmount ?? res.TotalAmount ?? null;
+  const totalDisplay = totalAmount != null ? fmt(totalAmount) : '<span class="muted">Total calculado durante la compra</span>';
+
+  // Try to read visitor breakdown from result (API may return Visitors in PascalCase) or fallback to request visitors
+  const resultVisitors = Array.isArray(res.Visitors) ? res.Visitors : (Array.isArray(res.visitors) ? res.visitors : []);
 
   const paymentVal = req.paymentMethod ?? snap.paymentMethod ?? "Unspecified";
   const method = paymentVal === "Card" ? "Tarjeta" : "Efectivo (boletería)";
@@ -57,7 +62,14 @@ function render() {
       <span class="chip">VIP: ${vip}</span>
       <span class="chip">Total entradas: ${totalCount}</span>
     </p>
-    <p><span class="muted">Total:</span> ${fmt(totalAmount)}</p>
+    <p><span class="muted">Total:</span> ${totalDisplay}</p>
+    ${resultVisitors.length ? `
+      <hr>
+      <p><strong>Detalle por visitante</strong></p>
+      <ul>
+        ${resultVisitors.map(v => `<li>${v.passType ?? v.PassType}: ${fmt(v.price ?? v.Price ?? 0)}</li>`).join('')}
+      </ul>
+    ` : ''}
     ${redirect ? `<p class="muted">Checkout: <a href="${redirect}" target="_blank" rel="noopener">${redirect}</a></p>` : ""}
   <p style="margin-top:10px;">${res.confirmationMessage ?? res.ConfirmationMessage ?? ""}</p>
   `;

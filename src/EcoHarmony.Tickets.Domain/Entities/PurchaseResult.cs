@@ -10,5 +10,7 @@ namespace EcoHarmony.Tickets.Domain.Entities
         public string ConfirmationMessage { get; set; } = string.Empty;
         public decimal TotalAmount { get; set; }
         public string Currency { get; set; } = "ARS";
+        // Optional detailed visitor breakdown with calculated prices
+        public List<Visitor> Visitors { get; set; } = new List<Visitor>();
     }
 }
