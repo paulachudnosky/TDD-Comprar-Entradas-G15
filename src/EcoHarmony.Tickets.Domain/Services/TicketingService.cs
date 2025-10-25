@@ -12,6 +12,10 @@ namespace EcoHarmony.Tickets.Domain.Services
         private readonly IEmailSender _email;
         private readonly IPaymentGateway _payments;
 
+        // --- CAMBIO: Precios actualizados ---
+        private const decimal PRICE_REG = 5000m;
+        private const decimal PRICE_VIP = 10000m;
+
         public TicketingService(IUserRepository users, IParkCalendar calendar, IEmailSender email, IPaymentGateway payments)
         {
             _users = users;
@@ -24,8 +28,8 @@ namespace EcoHarmony.Tickets.Domain.Services
         {
             Validate(request);
 
-            // Precios demo (placeholder)
-            decimal total = request.Visitors.Sum(v => v.PassType == PassType.Vip ? 25000m : 15000m);
+            // El total ahora usa los precios actualizados (5k/10k)
+            decimal total = request.Visitors.Sum(CalculatePrice);
 
             string? redirect = null;
             bool payAtCounter = false;
@@ -47,41 +51,81 @@ namespace EcoHarmony.Tickets.Domain.Services
                 PaymentRedirectUrl = redirect,
                 PayAtTicketOffice = payAtCounter,
                 ConfirmationMessage = $"Compra confirmada: {request.Visitors.Count} entradas para {request.VisitDate}.",
-                TotalAmount = total,
+                TotalAmount = total, 
                 Currency = request.Currency
             };
 
             // --- INICIA LA MEJORA DEL EMAIL ---
 
-            // 1. Define un asunto claro
+            // 1. Conteo por Tipo de Pase
+            int regularCount = request.Visitors.Count(v => v.PassType == PassType.Regular);
+            int vipCount = request.Visitors.Count(v => v.PassType == PassType.Vip);
+
+            // --- NUEVO: 2. Conteo por Rango de Edad ---
+            int menores3 = request.Visitors.Count(v => v.Age <= 3);
+            int menores15 = request.Visitors.Count(v => v.Age >= 4 && v.Age <= 15);
+            int adultos = request.Visitors.Count(v => v.Age >= 16 && v.Age <= 59);
+            int mayores60 = request.Visitors.Count(v => v.Age >= 60);
+
+            // 3. Asunto y Pago (sin cambios)
             var subject = $"Confirmación de tu compra para EcoHarmony Park (Fecha: {request.VisitDate:dd/MM/yyyy})";
 
-            // 2. Crea un mensaje de pago dinámico
             var paymentInfo = request.PaymentMethod == PaymentMethod.Card
-                ? $"Se ha procesado un pago de <strong>{total:C} {request.Currency}</strong> con tu tarjeta. Serás redirigido para finalizar."
+                ? $"Se ha procesado un pago de <strong>{total:C} {request.Currency}</strong> con tu tarjeta."
                 : $"Por favor, recuerda abonar <strong>{total:C} {request.Currency}</strong> en la boletería del parque el día de tu visita.";
 
-            // 3. Construye el cuerpo del email con HTML
-            var htmlBody = $"""
+            // 4. Construcción del HTML del email
+            var htmlBody = $$"""
                 <html>
-                <body style="font-family: sans-serif; padding: 20px;">
-                    <h1 style="color: #2E7D32;">¡Tu visita a EcoHarmony Park está confirmada!</h1>
-                    <p>Hola,</p>
-                    <p>Gracias por elegirnos. Aquí están los detalles de tu compra:</p>
-                    <hr>
-                    <p><strong>Número de entradas:</strong> {request.Visitors.Count}</p>
-                    <p><strong>Fecha de visita:</strong> {request.VisitDate:dddd, dd 'de' MMMM 'de' yyyy}</p>
-                    <p><strong>Monto Total:</strong> {total:C} {request.Currency}</p>
-                    <hr>
-                    <p>{paymentInfo}</p>
-                    <br>
-                    <p>¡Te esperamos para que disfrutes de una experiencia inolvidable!</p>
-                    <p><em>El equipo de EcoHarmony Park</em></p>
+                <head>
+                    <style>
+                        body { font-family: Arial, sans-serif; line-height: 1.6; }
+                        .container { width: 90%; margin: auto; padding: 20px; }
+                        .header { font-size: 24px; color: #134611; }
+                        .content { margin-top: 20px; }
+                        ul { list-style-type: none; padding-left: 0; }
+                        li { font-size: 16px; margin-bottom: 10px; }
+                        strong { color: #3E8914; }
+                        .small-list { list-style-type: disc; margin-left: 25px; }
+                        .small-list li { font-size: 14px; margin-bottom: 5px; }
+                    </style>
+                </head>
+                <body>
+                    <div class='container'>
+                        <h1 class='header'>¡Tu visita a EcoHarmony Park está confirmada!</h1>
+                        
+                        <p>Hola {{request.BuyerEmail}},</p>
+                        <p>Gracias por elegirnos. Aquí están los detalles de tu compra:</p>
+                        <hr>
+                        <p><strong>Fecha de visita:</strong> {{request.VisitDate:dddd, dd 'de' MMMM 'de' yyyy}}</p>
+                        <p><strong>Monto Total:</strong> {{total:C}} {{request.Currency}}</p>
+                        <p><strong>Total de Entradas:</strong> {{request.Visitors.Count}}</p>
+
+                        
+                        <p><strong>Detalle de pases:</strong></p>
+                        <ul class="small-list">
+                            <li>Entradas Regulares: <strong>{{regularCount}}</strong></li>
+                            <li>Entradas VIP: <strong>{{vipCount}}</strong></li>
+                        </ul>
+
+                        <p><strong>Desglose por edad:</strong></p>
+                        <ul class="small-list">
+                            <li>Menores (0-3 años): <strong>{{menores3}}</strong> (No pagan)</li>
+                            <li>Menores (4-15 años): <strong>{{menores15}}</strong> (Pagan 50%)</li>
+                            <li>Adultos (16-59 años): <strong>{{adultos}}</strong> (Pagan 100%)</li>
+                            <li>Mayores (60+ años): <strong>{{mayores60}}</strong> (Pagan 50%)</li>
+                        </ul>
+                        <hr>
+                        <p>{{paymentInfo}}</p>
+                        <br>
+                        <p>¡Te esperamos para que disfrutes de una experiencia inolvidable!</p>
+                        <p><em>El equipo de EcoHarmony Park</em></p>
+                    </div>
                 </body>
                 </html>
             """;
 
-            // 4. Envía el nuevo email
+            // 5. Envía el nuevo email
             _email.Send(request.BuyerEmail, subject, htmlBody);
             
             // --- FIN DE LA MEJORA DEL EMAIL ---
@@ -89,8 +133,22 @@ namespace EcoHarmony.Tickets.Domain.Services
             return result;
         }
 
+        private decimal CalculatePrice(Visitor visitor)
+        {
+            // Esta lógica ahora usa los nuevos precios (5k/10k)
+            decimal basePrice = visitor.PassType == PassType.Vip ? PRICE_VIP : PRICE_REG;
+            
+            if (visitor.Age <= 3) return 0;
+            if (visitor.Age >= 4 && visitor.Age <= 15) return Math.Round(basePrice / 2);
+            if (visitor.Age >= 16 && visitor.Age <= 59) return basePrice;
+            if (visitor.Age >= 60) return Math.Round(basePrice / 2);
+            
+            return basePrice; // Caso por defecto (si la edad es 0 o nula)
+        }
+
         private void Validate(PurchaseRequest req)
         {
+            // ... (Tu lógica de validación no necesita cambios) ...
             if (!_users.Exists(req.UserId))
                 throw new BusinessRuleException("Se debe permitir la compra solo a usuario registrado.");
 
